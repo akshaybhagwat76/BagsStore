@@ -1,0 +1,371 @@
+﻿
+@model BagsStore.Models.StripeSettings
+
+@{ 
+    double stripePrice = Convert.ToDouble(ViewBag.price);
+    stripePrice *= 100;
+}
+
+<div class="breadcrumb-section">
+
+</div>
+
+
+<style>
+
+    .book-form {
+        padding: 20px;
+        background: #F3F2F2;
+        border-radius: 20px;
+    }
+
+    .input-group {
+        margin: 10px 0px 10px !important;
+    }
+
+    select {
+        text-align: center;
+        text-align-last: center;
+        /* webkit*/
+    }
+
+    option {
+        text-align: left;
+        /* reset to left*/
+    }
+</style>
+
+<div class="page-wrapper property-details">
+
+    <div class="container">
+
+        <div class="row mt-3">
+
+            <div class="col-12 col-lg-12">
+
+                <div class="row">
+
+                    <div class="col-md-3"></div>
+
+                    <div class="col-md-6 book-form">
+
+                        <h5 class="product-title text-center text-uppercase" style="color:#63A13C!important;">Bag to store</h5>
+
+                        <p class="product-description mt-3"><span class="font-weight-bold">Drop off: </span>@ViewBag.dropOff</p>
+
+                        <p class="product-description"><span class="font-weight-bold">Pick up: </span>@ViewBag.pickUp</p>
+
+                        <p class="product-description"><span class="font-weight-bold">Bags: </span>@ViewBag.objects</p>
+
+                        <p class="product-description"><span class="font-weight-bold">Store name: </span>@ViewBag.name</p>
+
+                        <p class="product-description"><span class="font-weight-bold">Address: </span>@ViewBag.street</p>
+
+                        <p class="product-description btn w-100 text-center mt-2" style="font-size:20px; background-color:#63A13C; color:white;"><span class="font-weight-bold">Price: </span>€@ViewBag.price</p>
+
+                        <p class="product-description" style="text-align:center;font-weight:bold;margin-top:14px;margin-bottom:5px">
+                            Choose payment method
+                        </p>
+
+                        <select name="paymentMethod" class="form-control" style="margin-top:6px;width:50%;margin:0 auto">
+                            <option value="store" selected>Store</option>
+                            <option value="stripe">Stripe</option>
+                            <option value="paypal">Paypal</option>
+                        </select>
+
+                        <form method="post" action="/Store/Book" id="form">
+
+                            <input type="hidden" name="lng" value="@ViewBag.lng" />
+                            <input type="hidden" name="lat" value="@ViewBag.lat" />
+                            <input type="hidden" name="where" value="@ViewBag.where" />
+                            <input type="hidden" name="dropOff" value="@ViewBag.dropOff" />
+                            <input type="hidden" name="pickUp" value="@ViewBag.pickUp" />
+                            <input type="hidden" name="objects" value="@ViewBag.objects" />
+                            <input type="hidden" name="name" value="@ViewBag.name" />
+                            <input type="hidden" name="price" value="@ViewBag.price" />
+
+
+                            <div class="form-group mt-3">
+
+                                <div class="input-group">
+                                    <input type="text" name="firstName" class="form-control" placeholder="Name*" required />
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="text" name="lastName" class="form-control" placeholder="Surname*" required />
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="email" name="email" class="form-control" placeholder="Email adress*" required />
+                                </div>
+
+                                <div class="input-group">
+                                    <input type="text" name="phone" class="form-control" placeholder="Phone" />
+                                </div>
+
+                                <p class="small product-description font-weight-bold my-2">Pay at our store: €@ViewBag.price</p>
+
+                                <input required type="checkbox" name="checkbox" /> I agree to receive email communications related to new services and promotions.
+
+                                <p class="small product-description mt-2">By clicking on BOOK button you agree to the <a class="email-partner" href="/About/Terms" target="_blank">Terms and Conditions*</a></p>
+
+                                <input type="submit" class="btn-two w-100 mt-3" value="BOOK" />
+
+                            </div>
+
+                        </form>
+
+                        <form action="/Store/StripePayment" method="POST" id="stripeForm">
+
+                            <input type="hidden" name="lng" value="@ViewBag.lng" />
+                            <input type="hidden" name="lat" value="@ViewBag.lat" />
+                            <input type="hidden" name="where" value="@ViewBag.where" />
+                            <input type="hidden" name="dropOff" value="@ViewBag.dropOff" />
+                            <input type="hidden" name="pickUp" value="@ViewBag.pickUp" />
+                            <input type="hidden" name="objects" value="@ViewBag.objects" />
+                            <input type="hidden" name="name" value="@ViewBag.name" />
+                            <input type="hidden" name="price" value="@ViewBag.price" />
+
+                            <div class="input-group">
+                                <input type="text" name="firstName" class="form-control" placeholder="Name*" required />
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" name="lastName" class="form-control" placeholder="Surname*" required />
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" name="phone" class="form-control" placeholder="Phone" />
+                            </div>
+
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                    data-key="@Model.PublishableKey"
+                                    data-amount="@stripePrice"
+                                    data-name="Bag to store"
+                                    data-description="@ViewBag.objects bags"
+                                    data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                    data-currency="eur">
+                            </script>
+
+                            <p class="small product-description font-weight-bold my-2">Pay with stripe: €@ViewBag.price</p>
+
+                            <input required type="checkbox" name="checkbox" /> I agree to receive email communications related to new services and promotions.
+
+                            <p class="small product-description mt-2">By clicking on BOOK button you agree to the <a class="email-partner" href="/About/Terms" target="_blank">Terms and Conditions*</a></p>
+
+                            <input type="submit" class="btn-two w-100 mt-3" value="BOOK" />
+                        </form>
+
+                        @{ 
+                            String live = "https://www.paypal.com/cgi-bin/webscr";
+                            String test = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+                        }
+
+                        <form action="@test" method="post" id="paypal">
+
+                            <input type="hidden" name="lng" value="@ViewBag.lng" />
+                            <input type="hidden" name="lat" value="@ViewBag.lat" />
+                            <input type="hidden" name="where" value="@ViewBag.where" />
+                            <input type="hidden" name="dropOff" value="@ViewBag.dropOff" />
+                            <input type="hidden" name="pickUp" value="@ViewBag.pickUp" />
+                            <input type="hidden" name="objects" value="@ViewBag.objects" />
+                            <input type="hidden" name="name" value="@ViewBag.name" />
+                            <input type="hidden" name="price" value="@ViewBag.price" />
+
+
+                            @{
+                                String getUrl = "lng=" + ViewBag.lng + "&lat=" + ViewBag.lat +
+                                                "&where=" + ViewBag.where + "&dropOff=" + ViewBag.dropOff +
+                                                "&pickUp=" + ViewBag.pickUp + "&objects=" + ViewBag.objects +
+                                                "&name=" + ViewBag.name + "&price=" + ViewBag.price;
+
+                            }
+
+                            <input type="hidden" name="cmd" value="_xclick" />
+                            <input type="hidden" name="business" value="sb-ln3dn357163@business.example.com" />
+                            <input type="hidden" name="item_name" value="@ViewBag.objects bags" />
+                            <input type="hidden" name="amount" value="@ViewBag.price" />
+                            <input type="hidden" name="currency_code" value="EUR" />
+                            <input type="hidden" name="NOSHIPPING" value="1" />
+                            <input type="hidden" name="return" value="http://bagtostore.com/Successful/Paypal?@getUrl" id="returnUrl" />
+
+                            <div class="input-group">
+                                <input type="text" name="firstName" class="form-control" placeholder="Name*" required id="name" />
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" name="lastName" class="form-control" placeholder="Surname*" required id="lastName" />
+                            </div>
+
+                            <div class="input-group">
+                                <input type="email" name="email" class="form-control" placeholder="Email adress*" required id="email" />
+                            </div>
+
+                            <div class="input-group">
+                                <input type="text" name="phone" class="form-control" placeholder="Phone" id="phone" />
+                            </div>
+
+                            <p class="small product-description font-weight-bold my-2">Pay with paypal: €@ViewBag.price</p>
+
+                            <input required type="checkbox" name="checkbox" /> I agree to receive email communications related to new services and promotions.
+
+                            <p class="small product-description mt-2">By clicking on BOOK button you agree to the <a class="email-partner" href="/About/Terms" target="_blank">Terms and Conditions*</a></p>
+                        </form>
+                            
+                        <button class="btn-two w-100 mt-3" value="BOOK" onclick="paypal()" id="payB">BOOK</button>
+                      
+
+                    </div>
+
+                    <div class="col-md-3"></div>
+
+                </div>
+
+                <div class="row mt-5">
+
+                    <div class="col-md-12">
+                        <a style="float:right; color:#63A13C; font-weight:bold;" href="#" onclick="goBack()"><< Back</a>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section FooterContent{
+   
+    <script>
+
+        function paypal()
+        {
+            var name = $("#name").val();
+            var lastName = $("#lastName").val();
+            var email = $("#email").val();
+            var phone = $("#phone").val();
+            var returnUrl = $("#returnUrl").val();
+
+            returnUrl += "&firstName=" + name + "&lastName=" + lastName + "&phone=" + phone + "&email=" + email;
+
+            if (name == "" || lastName == "" || email == "") {
+                var modal = document.getElementById("myModal2");
+                var span = document.getElementsByClassName("close2")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                modal.style.display = "block";
+            }
+            else
+            {
+                $("#returnUrl").val(returnUrl);
+                $("#paypal").submit();
+            }
+
+        }
+
+        $(function () {
+
+            $(".stripe-button-el").hide()
+        
+            $("#stripeForm").hide();
+            $("#paypal").hide();
+            $("#payB").hide();
+
+        $("select").change(function () {
+            $("select option:selected").each(function () {
+                if ($(this).val() == "stripe") {
+                    $("#form").hide();
+                    $("#stripeForm").show();
+                    $("#paypal").hide();
+                    $("#payB").hide();
+                }
+                else if ($(this).val() == "store") {
+                    $("#form").show();
+                    $("#stripeForm").hide();
+                    $("#paypal").hide();
+                    $("#payB").hide();
+                }
+                else {
+                    $("#form").hide();
+                    $("#stripeForm").hide();
+                    $("#paypal").show();
+                    $("#payB").show();
+                }
+            });
+        });
+
+
+        });
+
+    </script>
+
+}
+
+    <div id="myModal2" class="modal2">
+
+        <!-- Modal content -->
+        <div class="modal-content2">
+            <span class="close2">&times;</span>
+            <br />
+            <p style="font-size: 20px; color: white; text-align: center; margin-bottom: 15px;" id="modalC">
+                First name, last name and email are required!
+            </p>
+        </div>
+
+    </div>
+
+
+<style>
+    .modal2 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 160px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content2 {
+        background-color: #63A13C;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #888;
+        width: 30%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close2 {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close2:hover,
+        .close2:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>

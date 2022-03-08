@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewBag.Title = "CreateStore";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+@using BagsStore.Models
+
+
+<div id="container" style="width:100%">
+    <div class="shell">
+
+        <!-- Small Nav -->
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <!-- End Box -->
+                <!-- Box -->
+                <div class="box">
+                    <!-- Box Head -->
+                    <div class="box-head">
+                        <h2>Create Store</h2>
+                    </div>
+                    <!-- End Box Head -->
+
+                    @using (Html.BeginForm(
+                    null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        <!-- Form -->
+                        <div class="form">
+
+                            <p>
+                                <label>Name</label>
+                                <input required type="text" name="Name" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>Street</label>
+                                <input required type="text" name="Street" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>Latitude</label>
+                                <input required type="text" name="Latitude" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>Longitude</label>
+                                <input required type="text" name="Longitude" class="field size1" />
+                            </p>
+                            <p>
+                                <label>Type</label>
+                                <input required type="text" name="Type" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>WorkingHours</label>
+                                <input required type="text" name="WorkingHours" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>Price</label>
+                                <input required type="text" name="Price" class="field size1" onkeypress="return isNumberKey(this, event);" />
+                            </p>
+                            <p>
+                                <label>Picture</label>
+                                <input type="file" name="Picture" accept="image/*" required />
+                            </p>
+                            <p>
+                                <label>Partner</label>
+                                <select name="Partner" class="field size1">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </p>
+                            <p>
+                                <label>Location</label>
+                                <select name="cityId" class="field size1">
+                                    @foreach (Location l in ViewBag.loc)
+                                    {
+                                        <option value="@l.Id">@l.Name</option>
+                                    }
+                                </select>
+                            </p>
+                            <p>
+                                <label>Email</label>
+                                <input required type="text" name="Email" class="field size1" />
+                            </p>
+                            <p>
+                                <label>MapPicture</label>
+                                <input type="file" name="MapPicture" accept="image/*" required />
+                            </p>
+                            <p>
+                                <label>Link</label>
+                                <input required type="text" name="Link" class="field size1" />
+                            </p>
+                            <p>
+                                <label>RealName</label>
+                                <input required type="text" name="RealName" class="field size1" />
+                            </p>
+                            <p>
+                                <label>HourFrom</label>
+                                <input required type="text" name="HourFrom" class="field size1" />
+                            </p>
+                            <p>
+                                <label>HourTo</label>
+                                <input required type="text" name="HourTo" class="field size1" />
+                            </p>
+                            <p>
+                                <label>Services</label>
+                                <input required type="text" name="Services" class="field size1" />
+                            </p>
+                            <p>
+                                <label>DayOff</label>
+                                <input required type="text" name="DayOff" class="field size1" />
+                            </p>
+                            <p>
+                                <label>Additional</label>
+                                <input required type="text" name="Additional" class="field size1" />
+                            </p>
+                            <p>
+                                <label>PictureMobile</label>
+                                <input type="file" name="PictureMobile" accept="image/*" required />
+                            </p>
+                        </div>
+                        <!-- End Form -->
+                        <!-- Form Buttons -->
+                        <div class="buttons">
+                            <input type="submit" class="button" value="Save" />
+                        </div>
+                        <!-- End Form Buttons -->
+                    }
+                </div>
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>
+<script type="text/javascript">
+    function isNumberKey(txt, evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode == 46) {
+            //Check if the text already contains the . character
+            if (txt.value.indexOf('.') === -1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (charCode > 31 &&
+                (charCode < 48 || charCode > 57))
+                return false;
+        }
+        return true;
+    }
+</script>

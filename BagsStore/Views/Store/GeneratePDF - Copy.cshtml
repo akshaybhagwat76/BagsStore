@@ -1,0 +1,128 @@
+﻿@model BagsStore.Models.GeneratePDFModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Invoice</title>
+
+    <style>
+
+        * {
+            font-size: 18px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="col-md-12">
+
+        <div style="width:40%">
+            <img src="~/Images/logoo.png" />
+        </div>
+
+        <div>
+            <h4 class="text" style="float:left;width:80%">
+                Thank you<br />
+                FOR BOOKING ON BAG STORE!
+            </h4><br />
+            <p style="float:right;width:20%">
+                <img src="~/Images/pdf2.png" />
+            </p>
+        </div>
+        <br /><br /><br />
+
+        <p style="font-weight:bold">
+            YOUR BOOKING DETAILS
+        </p>
+
+        <p>
+            <b>Name and last name:</b> @Model.Name @Model.LastName
+        </p>
+        <p>
+            <b>Order n°:</b>  #@Model.Number
+        </p>
+
+        <p>
+            <b>For payment:</b> €@Model.Price
+        </p>
+
+        <p>
+            <b>Drop off</b> : @Model.DropOff
+        </p>
+
+        <p>
+            <b>Pick Up</b> : @Model.PickUp
+        </p>
+
+        <p>
+            <b>Bags</b>: @Model.Bags
+        </p>
+        <hr />
+        <p style="font-weight:bold">
+            GO HERE TO STORE YOUR BAGS
+        </p>
+
+        <p>
+            <b>Shop name</b> : @Model.StoreName
+        </p>
+
+        <p>
+            <b>Address</b>: Slovenska cesta 56, 1000 Ljubljana.
+        </p>
+
+        <p>
+            Open in <a href="https://www.google.com/maps/place/Slovenska+cesta+56,+1000+Ljubljana,+Slovenia/46.0562112,14.5038813,17z">Google Maps</a>
+            (https://www.google.com/maps/place/Slovenska+cesta+56,+1000+Ljubljana,+Slovenia/46.0562112,14.5038813,17z)
+        </p>
+
+        <p>
+            Opening times: Mon-Sun 00:00-23:59
+        </p>
+        <hr />
+        <p style="font-weight:bold">
+            SHOP CONTACT DETAILS
+        </p>
+
+        <p>
+            <b>Telephone number</b> : +386 51 847 142
+        </p>
+
+        <p>
+            <b>Email</b> : info@bagtostore.com
+        </p>
+        <hr />
+        <p style="font-weight:bold">
+            ADDITIONAL INFORMATION
+        </p>
+
+        <p>
+            Please, once at the shop make sure to ll in correctly the check-in form and save your receipt
+            until pick-up.
+        </p>
+        <br /><br />
+        <p style="font-weight:bold;text-align:center">
+            Problems or questions?
+        </p>
+
+        <div>
+            <span style="float:left;width:20%;margin-top:-66px">
+                <img src="~/Images/pdf3.png" />
+            </span>
+
+            <span style="float:left;width:80%">
+                Please contact us at info@bagtostore.com
+                (mailto:info@bagtostore.com) or use the chat support on website:
+                bagbnb.com (https://bagbnb.com).
+            </span>
+        </div>
+
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="bags_Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="bags_Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Admins" EntityType="bags_Model.Admin" />
+    <EntitySet Name="Categories" EntityType="bags_Model.Category" />
+    <EntitySet Name="GaleryImages" EntityType="bags_Model.GaleryImage" />
+    <EntitySet Name="GaleryItems" EntityType="bags_Model.GaleryItem" />
+    <EntitySet Name="Items" EntityType="bags_Model.Item" />
+    <EntitySet Name="ItemContents" EntityType="bags_Model.ItemContent" />
+    <EntitySet Name="Locations" EntityType="bags_Model.Location" />
+    <EntitySet Name="Pictures" EntityType="bags_Model.Picture" />
+    <EntitySet Name="Reservations" EntityType="bags_Model.Reservation" />
+    <EntitySet Name="Reviews" EntityType="bags_Model.Review" />
+    <EntitySet Name="Stores" EntityType="bags_Model.Store" />
+    <EntitySet Name="Testimonials" EntityType="bags_Model.Testimonial" />
+    <AssociationSet Name="FK_Item_Category" Association="bags_Model.FK_Item_Category">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GaleryImages_GaleryItem" Association="bags_Model.FK_GaleryImages_GaleryItem">
+      <End Role="GaleryItem" EntitySet="GaleryItems" />
+      <End Role="GaleryImage" EntitySet="GaleryImages" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Item_ItemContent" Association="bags_Model.FK_Item_ItemContent">
+      <End Role="ItemContent" EntitySet="ItemContents" />
+      <End Role="Item" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Review_Location" Association="bags_Model.FK_Review_Location">
+      <End Role="Location" EntitySet="Locations" />
+      <End Role="Review" EntitySet="Reviews" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Admin">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="SortId" Type="Int32" />
+    <Property Name="IsVisible" Type="Boolean" />
+    <Property Name="IsPrintedEditionCategory" Type="Boolean" />
+    <NavigationProperty Name="Items" Relationship="bags_Model.FK_Item_Category" FromRole="Category" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="GaleryImage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SmallImage" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="BigImage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ImageDescription" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="GaleryItem_Id" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="GaleryItem" Relationship="bags_Model.FK_GaleryImages_GaleryItem" FromRole="GaleryImage" ToRole="GaleryItem" />
+  </EntityType>
+  <EntityType Name="GaleryItem">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="GaleryImages" Relationship="bags_Model.FK_GaleryImages_GaleryItem" FromRole="GaleryItem" ToRole="GaleryImage" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Category_Id" Type="Int32" Nullable="false" />
+    <Property Name="ItemContentId" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <Property Name="IsForSlider" Type="Boolean" />
+    <NavigationProperty Name="Category" Relationship="bags_Model.FK_Item_Category" FromRole="Item" ToRole="Category" />
+    <NavigationProperty Name="ItemContent" Relationship="bags_Model.FK_Item_ItemContent" FromRole="Item" ToRole="ItemContent" />
+  </EntityType>
+  <EntityType Name="ItemContent">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Title" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="SortDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SmallImage" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="MediumImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="BigImage" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="NumOfView" Type="Int64" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+    <Property Name="SecondTitle" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ImageDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="IsFree" Type="Boolean" />
+    <Property Name="GaleryId" Type="Int32" />
+    <NavigationProperty Name="Items" Relationship="bags_Model.FK_Item_ItemContent" FromRole="ItemContent" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="Location">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Latitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Longitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Active" Type="Boolean" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Reviews" Relationship="bags_Model.FK_Review_Location" FromRole="Location" ToRole="Review" />
+  </EntityType>
+  <EntityType Name="Picture">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Picture1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Reservation">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DropOff" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PickUp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Bags" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Latitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Longitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="StoreName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="Price" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PaymentMethod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Street" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="WHours" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MapPicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConf" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Additional" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Review">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CityId" Type="Int32" />
+    <Property Name="Country" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Rating" Type="Int32" />
+    <NavigationProperty Name="Location" Relationship="bags_Model.FK_Review_Location" FromRole="Review" ToRole="Location" />
+  </EntityType>
+  <EntityType Name="Store">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Street" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Latitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Longitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="WorkingHours" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Picture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Partner" Type="Boolean" />
+    <Property Name="Location" Type="Int32" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="MapPicture" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="RealName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="HourFrom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="HourTo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Services" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DayOff" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Additional" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PictureMobile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Testimonial">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Rating" Type="Int32" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+  </EntityType>
+  <Association Name="FK_Item_Category">
+    <End Type="bags_Model.Category" Role="Category" Multiplicity="1" />
+    <End Type="bags_Model.Item" Role="Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="Category_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GaleryImages_GaleryItem">
+    <End Type="bags_Model.GaleryItem" Role="GaleryItem" Multiplicity="1" />
+    <End Type="bags_Model.GaleryImage" Role="GaleryImage" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GaleryItem">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="GaleryImage">
+        <PropertyRef Name="GaleryItem_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Item_ItemContent">
+    <End Type="bags_Model.ItemContent" Role="ItemContent" Multiplicity="1" />
+    <End Type="bags_Model.Item" Role="Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ItemContent">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Item">
+        <PropertyRef Name="ItemContentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Review_Location">
+    <End Type="bags_Model.Location" Role="Location" Multiplicity="0..1" />
+    <End Type="bags_Model.Review" Role="Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Location">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="CityId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,116 @@
+﻿@model IEnumerable<BagsStore.Models.Location>
+
+@{
+    ViewBag.Title = "Locations";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+@using BagsStore.Models
+<!-- import the included stylesheet for some (very basic) default styling -->
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<style>
+    .h2-page-heading {
+        padding: 10px;
+        font-size: 15px;
+        text-align: center;
+    }
+</style>
+<div id="container">
+    <div class="shell">
+
+        <!-- Small Nav -->
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <div class="box">
+                    <h2 class="h2-page-heading">Cities List</h2>
+                    <hr />
+                    <!-- Box Head -->
+                    <!-- End Box Head -->
+                    <!-- Table -->
+                    <div class="table">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <th>City Name</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            @foreach (Location item in ViewBag.OnePageOfProducts)
+                            {
+                                <tr>
+                                    <td><h3><a href="#">@item.Name</a></h3></td>
+                                    <td><h3><a href="#">@item.Latitude</a></h3></td>
+                                    <td><h3><a href="#">@item.Longitude</a></h3></td>
+                                    <td>
+                                        <a href="@Url.Action("DeleteLocation", "Admin", new { id = item.Id })" class="ico del">Delete</a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("EditLocation", "Admin", new { id = item.Id })" class="ico edit">Edit</a>
+                                    </td>
+                                </tr>
+
+
+                            }
+
+                            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Locations", "Admin", new { page }))
+
+                        </table>
+
+
+                        <!-- Pagging -->
+                        <div class="pagging">
+
+                        </div>
+                        <!-- End Pagging -->
+
+                    </div>
+                    <!-- Table -->
+
+                </div>
+                <!-- End Box -->
+                <!-- Box -->
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <div id="sidebar">
+
+                <!-- Box -->
+                <div class="box">
+
+                    <!-- Box Head -->
+                    <!-- End Box Head-->
+
+                    <div class="box-content">
+                        <a href="@Url.Action("CreateLocation","Admin")" class="add-button"><span>Create</span></a>
+                        <div class="cl">&nbsp;</div>
+
+
+                    </div>
+                </div>
+                <!-- End Box -->
+            </div>
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>
+

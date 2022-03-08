@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "HowItWorks";
+}
+
+@section HeaderContent{
+
+    <title>Safe Luggage Storage in Ljubljana- Bag to Store</title>
+    <meta name="description" content="Safe Luggage Storage in Ljubljana. First bag storage in Ljubljana. Most reliable baggage storage in your city." />
+    <link rel="canonical" href="https://bagtostore.com/who-we-are" />
+}
+
+
+@model BagsStore.Models.ItemContent
+<div class="breadcrumb-section">
+</div>
+
+<div class="page-wrapper">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <div class="col-md-12">
+                    <p class="section-title text-center">Who we are</p>
+                    <h1 class="title text-center mb-3">@Model.Title</h1>
+
+                    @Html.Raw(Model.Content)
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <img style="margin-left:auto; margin-right:auto; display:block;" class="img-fluid" width="70%" height="70%" class="img-fluid" src="/images/@Model.BigImage" />
+
+            </div>
+
+        </div>
+
+        <div class="row mt-5">
+
+            <div class="col-md-6">
+                <!-- Go to www.addthis.com/dashboard to customize your tools --> <div class="addthis_inline_share_toolbox"></div>
+            </div>
+
+            <div class="col-md-6">
+                <a style="float:right; color:#63A13C; font-weight:bold;" href="#" onclick="goBack()"><< Back</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+

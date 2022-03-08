@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+@using BagsStore.Models;
+
+<!-- import the included stylesheet for some (very basic) default styling -->
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<div id="container">
+    <div class="shell">
+
+        <!-- Small Nav -->
+       
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+     
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <div class="box">
+                    <!-- Box Head -->
+                    
+                    <!-- End Box Head -->
+                    <!-- Table -->
+                    <div class="table">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                               
+                                <th>Локација</th>
+                                <th>Име и презиме</th>
+                                <th>Датум</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            @foreach (Reservation item in ViewBag.OnePageOfProducts)
+                            {
+                            <tr>
+  
+                               
+                                <td><h3><a href="#">@item.StoreName</a></h3></td>
+                                <td><h3><a href="#">@item.Name @item.Surname</a></h3></td>
+                                <td>@item.Date</td>
+                                <td>
+                                    <a href="/Admin/DownloadPDF/@item.Id" class="ico del">Превземи</a>
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("View", "Admin", new { id = item.Id })" class="ico edit">Види детално</a>
+                                </td>
+                            </tr>
+                           
+
+                            }
+
+                            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Index", "Admin", new { page }))
+                         
+                        </table>
+
+
+                        <!-- Pagging -->
+                        <div class="pagging">
+                           
+                        </div>
+                        <!-- End Pagging -->
+
+                    </div>
+                    <!-- Table -->
+
+                </div>
+                <!-- End Box -->
+                <!-- Box -->
+           
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <div id="sidebar">
+
+                <!-- Box -->
+              
+                <!-- End Box -->
+            </div>
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>

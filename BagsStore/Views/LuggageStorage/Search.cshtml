@@ -1,0 +1,1319 @@
+﻿<div class="breadcrumb-section">
+</div>
+@using BagsStore.Models;
+
+@section HeaderContent{
+    <title>Luggage Storage Vienna - Bag to Store</title>
+    <meta name="description" content="Safe luggage storage in Vienna. Book now online. €3.99 eur/day. No extra costs. One size fits all">
+    <link rel="canonical" href="https://bagtostore.com/luggage-storage/vienna" />
+}
+
+@{
+    int i2 = 1;
+    string distId = "dist";
+    int i = 0;
+    string sb = "subm";
+}
+
+<style>
+
+    .xdsoft_current {
+        background-color: green !important;
+    }
+
+    .xdsoft_datetimepicker .xdsoft_calendar td:hover, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
+        background-color: lightgreen !important;
+        color: black !important;
+        font-weight: bold;
+    }
+
+    .form-control {
+        background-color: #F5F5F5 !important;
+    }
+
+    .input-group {
+        border-radius: 5px;
+        padding: 8px 20px 8px 25px;
+        background-color: #f5f5f5;
+        margin: 10px 0 10px;
+    }
+</style>
+
+<div class="page-wrapper sidebar-map">
+    <div class="container">
+        <form method="POST" action="/luggage-storage/vienna">
+            <input type="hidden" id="lat" name="lat" value="@ViewBag.latLj" />
+            <input type="hidden" id="lng" name="lng" value="@ViewBag.lngLj" />
+            <div class="row">
+                <div class="col-12 col-md-3">
+                    <div class="input-group">
+                        <input style="border:0!important;" id="loc" name="where" list="city" type="text" required class="form-control" placeholder="Where?" value="Vienna" readonly>
+                        <div class="input-group-append">
+                            <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3">
+                    <div class="input-group">
+
+                        <input autocomplete="off" class="form-control" id="input" onchange="checkDropOff()" placeholder="Drop-off" name="dropOff" required value="@ViewBag.dropOff" />
+                        <div class="input-group-append">
+                            <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-sm-3">
+                    <div class="input-group">
+
+                        <input autocomplete="off" class="form-control" id="input1" onchange="checkPickUp()" placeholder="Pick-up" name="pickUp" required value="@ViewBag.pickUp" />
+                        <div class="input-group-append">
+                            <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-12 col-md-2">
+                    <div class="input-group">
+                        <input style="border:0!important;" required type="number" min="1" onfocus="this.value='1'" class="form-control" name="objects" placeholder="Bags" value="@ViewBag.objects">
+                        <div class="input-group-append">
+                            <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-luggage-cart"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-1" style="padding-top:10px">
+                    <button type="submit" class="btn-two">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </form>
+
+
+        <script>
+           $('#input').datetimepicker({ step: 30, defaultTime: '12:00' });
+           $('#input1').datetimepicker({ step: 30, defaultTime: '12:00' });
+
+            function checkDropOff() {
+                var dropOff = $("#input").val();
+                var date = new Date(dropOff);
+
+                if (date < new Date()) {
+
+                    var modal = document.getElementById("myModal2");
+                    var span = document.getElementsByClassName("close2")[0];
+
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                    modal.style.display = "block";
+                    $("#input").val("");
+                }
+
+            }
+
+            function checkPickUp() {
+                var pickUp = $("#input1").val();
+                var date = new Date(pickUp);
+
+                var dropOff = $("#input").val();
+                var date2 = new Date(dropOff);
+
+                if (date < new Date()) {
+
+                    var modal = document.getElementById("myModal2");
+                    var span = document.getElementsByClassName("close2")[0];
+
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                    $("#modalC").html("You can not book earlier than current date!");
+                    modal.style.display = "block";
+                    $("#input1").val("");
+                }
+
+                if (date < date2) {
+
+                    var modal = document.getElementById("myModal2");
+                    var span = document.getElementsByClassName("close2")[0];
+
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                    $("#modalC").html("You can not book earlier than drop off date!");
+                    modal.style.display = "block";
+
+                    $("#input1").val("");
+                }
+            }
+
+
+            function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+
+                lat1 = parseFloat(lat1);
+                lon1 = parseFloat(lon1);
+                lat2 = parseFloat(lat2);
+                lon2 = parseFloat(lon2);
+
+                var R = 6371; // Radius of the earth in km
+                var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+                var dLon = deg2rad(lon2 - lon1);
+                var a =
+                    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+                    ;
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var d = R * c; // Distance in km
+                return d.toFixed(2);
+            }
+
+            function deg2rad(deg) {
+                return deg * (Math.PI / 180)
+            }
+
+
+
+            $(function () {
+                var locs = @Html.Raw(Json.Encode(ViewBag.stores));
+                var k = 1;
+                for (var j = 0; j < locs.length; j++)
+                {
+                    var dist = getDistanceFromLatLonInKm('@ViewBag.lat', '@ViewBag.lng', locs[j]['Latitude'], locs[j]['Longitude']);
+                    $("#dist" + k).html(dist);
+                    k++;
+                }
+            });
+
+            $(function () {
+
+                /*window.onload = setTimeout(function () {
+                    var modal = document.getElementById("myModal4");
+                    var span = document.getElementsByClassName("close4")[0];
+
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                    modal.style.display = "block";
+                }, 5000);*/
+
+
+
+            var pop = '@ViewBag.pop';
+
+            if (pop == 'True') {
+                var modal = document.getElementById("myModal3");
+                var span = document.getElementsByClassName("close3")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                modal.style.display = "block";
+            }
+
+            $('#loc').change(function (e) {
+
+                if ($('#loc').val() != "My Location" && $('#loc').val() != "Ljubljana") {
+                    var modal = document.getElementById("myModal3");
+                    var span = document.getElementsByClassName("close3")[0];
+
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                    modal.style.display = "block";
+                    $('#loc').val("");
+                }
+
+                if ($('#loc').val() == "My Location")
+                {
+                    getLocation();
+                }
+            });
+        });
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                $("#loc").val("");
+                alert("Geolocation is not supported by this browser");
+            }
+        }
+
+        function showPosition(position) {
+            $("#lat").val(position.coords.latitude);
+            $("#lng").val(position.coords.longitude);
+            $("#loc").val("My Location");
+            }
+
+            function popCheck() {
+                var modal = document.getElementById("myModal5");
+                var span = document.getElementsByClassName("close5")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                modal.style.display = "block";
+            }
+
+
+        </script>
+
+
+
+    </div>
+    @if (Request.Browser.IsMobileDevice)
+    {
+
+        <style>
+            .product-item {
+                border: none;
+                margin: 5px;
+                cursor: none;
+                padding: 20px;
+            }
+
+                .product-item:hover {
+                    border: 2px solid green;
+                    border-radius: 15px;
+                    cursor: pointer;
+                }
+
+            .product-title {
+                font-size: 14px !important;
+            }
+
+            .text, .product-description, .product-feature-description {
+                font-size: 12px !important;
+                margin: 2px !important;
+            }
+
+            .sbHi {
+                padding: 5px !important;
+                float: right !important;
+            }
+        </style>
+
+        <div class="container-fluid" style="padding:0px !important;margin:0px !important">
+
+            <div class="row mt-4 pt-2" style="padding:0px !important;margin:0px !important">
+                <div class="col-12 col-lg-6 left-sidebar" style="padding:0px !important;margin:0px !important">
+                    @foreach (Store s in ViewBag.stores)
+                    {
+                        distId = distId + i2.ToString();
+                        sb = sb + i.ToString();
+                        <div class="row product-item list-style" id="@i" onclick="foc(@s.Latitude, @s.Longitude)" onmouseover="hover(@i)" onmouseout="out(@i)" style="padding:10px !important;margin:10px !important;">
+                            <div class="col-5 col-md-6 pad-lr-0">
+                                <img src="~/Images/belgradeMob.png" style="height:200px !important;width:100%" />
+                            </div>
+                            <div class="col-7 col-md-6 m-auto pad-lr-0" style="padding:0px !important;margin:0px !important">
+                                <div class="content" style="padding:0px !important;margin:0px !important">
+                                    <a class="product-title" href="javascript:void(0)" style="text-transform:uppercase;padding:0px !important;margin:0px !important;text-align:center">@s.Name</a>
+
+                                    <div class="row" style="padding-left:10px">
+
+                                        <div class="col-md-12 text">Price details: <span style="font-weight:bold">€@s.Price per day</span></div>
+                                        <div class="col-md-12 text">Type: <span style="font-weight:bold">@s.Type</span></div>
+
+                                        <div class="col-md-12 text">Opening Hours: <span style="font-weight:bold">@s.WorkingHours</span></div>
+
+                                        <div class="col-md-12 text">Services: <span>Wifi, Security seals, Reserve online, One price for any size, Open 24/7 upon your request</span></div>
+
+                                        <div class="col-md-12"><p class="product-description">About <span id="@distId"></span> km from chosen place</p></div>
+                                        <div class="col-md-12">
+                                            <form method="post" action="/Store/Index">
+                                                <input type="hidden" name="lng" value="@ViewBag.lng" />
+                                                <input type="hidden" name="lat" value="@ViewBag.lat" />
+                                                <input type="hidden" name="where" value="@ViewBag.where" />
+                                                <input type="hidden" name="dropOff" value="@ViewBag.dropOff" />
+                                                <input type="hidden" name="pickUp" value="@ViewBag.pickUp" />
+                                                <input type="hidden" name="objects" value="@ViewBag.objects" />
+                                                <input type="hidden" name="name" value="@s.Name" />
+                                                <input type="hidden" name="street" value="@s.Street" />
+                                                <input type="hidden" name="price" value="@s.Price" />
+                                                <input type="hidden" name="partner" value="@s.Partner.ToString()" />
+                                                <input type="hidden" name="emailConf" value="@s.Email" />
+                                                <input type="hidden" name="mapPicture" value="@s.MapPicture" />
+                                                <input type="hidden" name="link" value="@s.Link" />
+                                                <input type="hidden" name="whours" value="@s.WorkingHours" />
+                                                <input type="hidden" name="realName" value="@s.RealName" />
+
+
+                                                @if (ViewBag.dropOff == null || ViewBag.pickUp == null || ViewBag.objects == null)
+                                                {
+                                                    <button class="btn-two @sb sbHi" type="button" onclick="popCheck()">BOOK NOW</button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn-two @sb sbHi" type="submit">BOOK NOW</button>
+                                                }
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        distId = "dist";
+                        i++;
+                        i2++;
+
+                    }
+
+
+                </div>
+                <div class="col-12 col-lg-6 order-first order-lg-last half-map">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <div class="row mt-5" style="margin:0px !important;padding: 0px !important">
+
+                <div class="col-md-6">
+
+                    <h3>Where can I store my luggage in Vienna?</h3><br />
+                    <p>
+                        Store your luggage in Vienna with Bag to Store. Looking for bag storage in Vienna? Don’t look any further. Bag
+                        to Store created for you most convenient and reliable luggage storage network in Vienna. Before checking in or
+                        after checking out of your accommodation you can store your bags on many locations near you in Vienna. Our
+                        wide network will let you choose your most convenient place to store your baggage. We cover locations from
+                        city center to main bus and train station.
+                    </p>
+
+
+
+
+                </div>
+                <div class="col-md-6">
+                    <h3>How to store my luggage with Bag to Store?</h3><br />
+                    <p>
+                        Safe luggage storage in Vienna with Bag to Store is done in 5 minutes. Booking through our website is
+                        mandatory and you have to follow these steps:<br />
+                        1. Find luggage storage near you<br />
+                        2. Check opening hours<br />
+                        3. Book through our website<br />
+                        4. Get directions to LuggagePoint on your email<br />
+                        5. You are ready to go. Enjoy your day luggage free
+
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <h3>
+                        How much does it cost to store bags with Bag to Store?
+                    </h3><br />
+                    <p>
+                        Storing bags with Bag to Store is cheap. You pay from 2.99€ per 24 hours. We have special offer for all
+                        Erasmus and long-term storage. Drop us a line on info@bagtostore.com to find out more.
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+                    <a style="float:right; color:#40A629; font-weight:bold;" href="#" onclick="goBack()"><< Back</a>
+                </div>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <style>
+            .product-item {
+                border: none;
+                margin: 5px;
+                cursor: none;
+                padding: 20px;
+            }
+
+                .product-item:hover {
+                    border: 2px solid green;
+                    border-radius: 15px;
+                    cursor: pointer;
+                }
+
+            .product-title {
+                font-size: 1.1vw !important;
+            }
+
+            .text, .product-description, .product-feature-description {
+                font-size: 0.75vw !important;
+                margin: 2px !important;
+            }
+
+            .sbHi {
+                padding: 5px !important;
+                float: right !important;
+            }
+        </style>
+
+        <div class="container-fluid">
+
+            <div class="row mt-4 pt-2">
+                <div class="col-12 col-lg-6 left-sidebar">
+                    @foreach (Store s in ViewBag.stores)
+                    {
+                        distId = distId + i2.ToString();
+                        sb = sb + i.ToString();
+                        <div class="row product-item list-style" id="@i" onclick="foc(@s.Latitude, @s.Longitude)" onmouseover="hover(@i)" onmouseout="out(@i)">
+                            <div class="col-12 col-md-6 pad-lr-0" style="width:100vh !important">
+                                <img class="img-responsive" src="~/Images/belgradeDesk.png" style="max-width:100%" />
+                            </div>
+                            <div class="col-12 col-md-6 m-auto pad-lr-0" style="width:100vh !important">
+                                <div class="content">
+                                    <a class="product-title" href="javascript:void(0)" style="text-transform:uppercase">@s.Name</a>
+                                    <div class="row">
+                                        <div class="col-md-6"><h6 class="text">Price details:</h6></div>
+
+                                        <div class="col-md-6"><p class="product-description font-weight-bold text-dark">€@s.Price per day</p></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6"><h6 class="text">Type:</h6></div>
+
+                                        <div class="col-md-6"><p class="product-description font-weight-bold text-dark">@s.Type</p></div>
+
+                                        <div class="col-md-6"><h6 class="text">Opening Hours:</h6></div>
+
+                                        <div class="col-md-6"><p class="product-description font-weight-bold text-dark">@s.WorkingHours</p></div>
+
+
+                                        <div class="col-md-3"><h6 class="text">Services:</h6></div>
+
+                                        <div class="col-md-9">
+                                            <p class="product-description text-dark">
+                                                Wifi
+                                                , Security seals
+                                                , Reserve online
+                                                , One price for any size,
+                                                Open 24/7 upon your request
+                                            </p>
+                                        </div>
+
+                                        <div class="col-md-12"><p class="product-description">About <span id="@distId"></span> km from chosen place</p></div>
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-9">
+                                            <form method="post" action="/Store/Index">
+                                                <input type="hidden" name="lng" value="@ViewBag.lng" />
+                                                <input type="hidden" name="lat" value="@ViewBag.lat" />
+                                                <input type="hidden" name="where" value="@ViewBag.where" />
+                                                <input type="hidden" name="dropOff" value="@ViewBag.dropOff" />
+                                                <input type="hidden" name="pickUp" value="@ViewBag.pickUp" />
+                                                <input type="hidden" name="objects" value="@ViewBag.objects" />
+                                                <input type="hidden" name="name" value="@s.Name" />
+                                                <input type="hidden" name="street" value="@s.Street" />
+                                                <input type="hidden" name="price" value="@s.Price" />
+                                                <input type="hidden" name="partner" value="@s.Partner.ToString()" />
+                                                <input type="hidden" name="emailConf" value="@s.Email" />
+                                                <input type="hidden" name="mapPicture" value="@s.MapPicture" />
+                                                <input type="hidden" name="link" value="@s.Link" />
+                                                <input type="hidden" name="whours" value="@s.WorkingHours" />
+                                                <input type="hidden" name="realName" value="@s.RealName" />
+
+
+                                                @if (ViewBag.dropOff == null || ViewBag.pickUp == null || ViewBag.objects == null)
+                                                {
+                                                    <button class="btn-two @sb sbHi" type="button" onclick="popCheck()">BOOK NOW</button>
+                                                }
+                                                else
+                                                {
+                                                    <button class="btn-two @sb sbHi" type="submit">BOOK NOW</button>
+                                                }
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        distId = "dist";
+                        i++;
+                        i2++;
+
+                    }
+
+
+                </div>
+                <div class="col-12 col-lg-6 order-first order-lg-last half-map">
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <div class="row mt-5" style="margin:0px !important;padding: 0px !important">
+
+                <div class="col-md-6">
+
+                    <h3>Where can I store my luggage in Vienna?</h3><br />
+                    <p>
+                        Store your luggage in Vienna with Bag to Store. Looking for bag storage in Vienna? Don’t look any further. Bag
+                        to Store created for you most convenient and reliable luggage storage network in Vienna. Before checking in or
+                        after checking out of your accommodation you can store your bags on many locations near you in Vienna. Our
+                        wide network will let you choose your most convenient place to store your baggage. We cover locations from
+                        city center to main bus and train station.
+                    </p>
+
+
+
+
+                </div>
+                <div class="col-md-6">
+                    <h3>How to store my luggage with Bag to Store?</h3><br />
+                    <p>
+                        Safe luggage storage in Vienna with Bag to Store is done in 5 minutes. Booking through our website is
+                        mandatory and you have to follow these steps:<br />
+                        1. Find luggage storage near you<br />
+                        2. Check opening hours<br />
+                        3. Book through our website<br />
+                        4. Get directions to LuggagePoint on your email<br />
+                        5. You are ready to go. Enjoy your day luggage free
+
+                    </p>
+                </div>
+
+                <div class="col-md-6">
+                    <h3>
+                        How much does it cost to store bags with Bag to Store?
+                    </h3><br />
+                    <p>
+                        Storing bags with Bag to Store is cheap. You pay from 2.99€ per 24 hours. We have special offer for all
+                        Erasmus and long-term storage. Drop us a line on info@bagtostore.com to find out more.
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+                    <a style="float:right; color:#40A629; font-weight:bold;" href="#" onclick="goBack()"><< Back</a>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+<style>
+
+
+    .marker-info {
+        position: relative;
+        width: 250px;
+        padding: 20px;
+        background-color: #fff;
+        border: 2px solid #40A629;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+        .marker-info .title {
+            position: relative;
+            display: block;
+            color: #41485a;
+            font-size: 17px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .marker-info .location {
+            position: relative;
+            color: #9a9a9a;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            vertical-align: middle;
+        }
+
+            .marker-info .location:before {
+                display: none;
+                color: #40A629;
+                font-family: 'FontAwesome';
+                content: '\f5a0';
+                font-size: 12px;
+                font-weight: 900;
+                padding-right: 10px;
+                vertical-align: middle;
+            }
+
+        .marker-info .star {
+            font-size: 17px;
+            color: #40A629;
+        }
+
+            .marker-info .star > i:not(last-child) {
+                padding-right: 7px;
+            }
+
+    .closeMarker {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 18px;
+    }
+
+    .labelss {
+        font-size: 30px;
+    }
+</style>
+
+@section FooterContent{
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDi0CKnhnRClfWA5UC4MKNh55c6D9phWC8&libraries=places&callback=initMap"></script>
+
+
+    <script>
+
+        var lng = '@ViewBag.lng';
+        var lat = '@ViewBag.lat';
+        var dataLocs = [];
+        var icon = null;
+
+        var locs = @Html.Raw(Json.Encode(ViewBag.stores));
+
+       for (var j = 0; j < locs.length; j++)
+       {
+           var data =
+               {
+                   name: " ",
+                   location_latitude: locs[j]['Latitude'],
+                   location_longitude: locs[j]['Longitude'],
+                   location: "The exact address will be given to you after booking",
+                   icon_size: 2,
+                   id: j
+           };
+           dataLocs.push(data);
+        }
+
+         var data =
+               {
+                   name: " ",
+                   location_latitude: lat,
+                   location_longitude: lng,
+                   location: " ",
+             icon_size: 1,
+             id: locs.length
+        };
+
+          dataLocs.push(data);
+
+        var markersData = { 'Marker': dataLocs };
+
+
+        var mapObject, marker, markers = [];
+
+            mapObject = new google.maps.Map(document.getElementById('map'), {
+                zoom: 17,
+                center: new google.maps.LatLng(lat,lng)
+            });
+
+            for (var key in markersData)
+                markersData[key].forEach(function (item) {
+
+                    if (item.id == locs.length) {
+
+                        marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(item.location_latitude, item.location_longitude),
+                            map: mapObject,
+                            label: {
+                                text: item.name,
+                                color: 'black',
+                                fontSize: '18px'
+                            },
+                            icon: {
+                                url: '/images/myloc.png',
+                                scaledSize: new google.maps.Size(50, 50),
+                                anchor: new google.maps.Point(11, 22),
+                                labelOrigin: new google.maps.Point(10, -5),
+                            }
+                        });
+
+                        marker.metadata = { type: "point", id: item.id };
+
+                        if ('undefined' === typeof markers[key])
+                            markers[key] = [];
+
+                        markers[key].push(marker);
+                        google.maps.event.addListener(marker, 'click', (function () {
+                            closeInfoBox();
+                            getInfoBox(item).open(mapObject, this);
+                        }));
+
+                    }
+                    else {
+                        var datePickUp = '@ViewBag.pickUp';
+                        var dateDropOff = '@ViewBag.dropOff';
+
+                        if (datePickUp == '' || dateDropOff == '') {
+                            marker = new google.maps.Marker({
+                                position: new google.maps.LatLng(item.location_latitude, item.location_longitude),
+                                map: mapObject,
+                                label: {
+                                    text: item.name,
+                                    color: 'black',
+                                    fontSize: '18px'
+                                },
+                                icon: {
+                                    path: 'M11 2c-3.9 0-7 3.1-7 7 0 5.3 7 13 7 13 0 0 7-7.7 7-13 0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5 0-1.4 1.1-2.5 2.5-2.5 1.4 0 2.5 1.1 2.5 2.5 0 1.4-1.1 2.5-2.5 2.5Z',
+                                    scale: item.icon_size,
+                                    anchor: new google.maps.Point(11, 22),
+                                    fillOpacity: 1,
+                                    fillColor: '#40A629',
+                                    strokeOpacity: 0,
+                                    labelOrigin: new google.maps.Point(10, -5),
+                                }
+                            });
+
+                            marker.metadata = { type: "point", id: item.id };
+
+                            if ('undefined' === typeof markers[key])
+                                markers[key] = [];
+
+                            markers[key].push(marker);
+                            google.maps.event.addListener(marker, 'click', (function () {
+                                closeInfoBox();
+                                getInfoBox(item).open(mapObject, this);
+                            }));
+                        }
+                        else {
+                            datePickUp = new Date(datePickUp);
+                            dateDropOff = new Date(dateDropOff);
+                            var open = true;
+
+                            var openHour = locs[item.id]['HourFrom'];
+                            var closeHour = locs[item.id]['HourTo'];
+                            var dayOff = locs[item.id]['DayOff'];
+
+                            var x = openHour.split(':');
+                            var y = closeHour.split(':');
+                            var z = dayOff.split(',');
+
+                            var hoursDropOff = parseInt(dateDropOff.getHours());
+                            var minutesDropOff = parseInt(dateDropOff.getMinutes());
+                            var dayDropOff = parseInt(dateDropOff.getDay());
+
+                            var hoursPickUp = parseInt(datePickUp.getHours());
+                            var minutesPickUp = parseInt(datePickUp.getMinutes());
+                            var dayPickUp = parseInt(datePickUp.getDay());
+
+                            x[0] = parseInt(x[0]);
+                            x[1] = parseInt(x[1]);
+
+                            y[0] = parseInt(y[0]);
+                            y[1] = parseInt(y[1]);
+
+                            if (z.length == 1) {
+                                z[0] = parseInt(z[0]);
+                                if (dayPickUp == z[0] || dayDropOff == z[0]) {
+                                    open = false;
+                                    $(".subm" + item.id).hide();
+                                }
+                            }
+                            else {
+                                z[0] = parseInt(z[0]);
+                                z[1] = parseInt(z[1]);
+
+                                if (dayPickUp == z[0] || dayDropOff == z[0] ||dayPickUp == z[1] || dayDropOff == z[1]) {
+                                    open = false;
+                                     $(".subm" + item.id).hide();
+                                }
+                            }
+
+                            if ((hoursDropOff < x[0] && minutesDropOff <= x[1]) || (hoursDropOff > y[0] && minutesDropOff <= y[1])) {
+                                open = false;
+                                $(".subm" + item.id).hide();
+                            }
+
+                            if ((hoursPickUp > y[0] && minutesPickUp <= y[1]) || (hoursPickUp < x[0] && minutesPickUp <= x[1])) {
+                                open = false;
+                                $(".subm" + item.id).hide();
+                            }
+
+                            if (open == true) {
+                                marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(item.location_latitude, item.location_longitude),
+                                    map: mapObject,
+                                    label: {
+                                        text: item.name,
+                                        color: 'black',
+                                        fontSize: '18px'
+                                    },
+                                    icon: {
+                                        path: 'M11 2c-3.9 0-7 3.1-7 7 0 5.3 7 13 7 13 0 0 7-7.7 7-13 0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5 0-1.4 1.1-2.5 2.5-2.5 1.4 0 2.5 1.1 2.5 2.5 0 1.4-1.1 2.5-2.5 2.5Z',
+                                        scale: item.icon_size,
+                                        anchor: new google.maps.Point(11, 22),
+                                        fillOpacity: 1,
+                                        fillColor: '#40A629',
+                                        strokeOpacity: 0,
+                                        labelOrigin: new google.maps.Point(10, -5),
+                                    }
+                                });
+
+                                marker.metadata = { type: "point", id: item.id };
+
+                                if ('undefined' === typeof markers[key])
+                                    markers[key] = [];
+
+                                markers[key].push(marker);
+                                google.maps.event.addListener(marker, 'click', (function () {
+                                    closeInfoBox();
+                                    getInfoBox(item).open(mapObject, this);
+                                }));
+                            }
+                            else {
+                                marker = new google.maps.Marker({
+                                    position: new google.maps.LatLng(item.location_latitude, item.location_longitude),
+                                    map: mapObject,
+                                    label: {
+                                        text: item.name,
+                                        color: 'black',
+                                        fontSize: '18px'
+                                    },
+                                    icon: {
+                                        path: 'M11 2c-3.9 0-7 3.1-7 7 0 5.3 7 13 7 13 0 0 7-7.7 7-13 0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5 0-1.4 1.1-2.5 2.5-2.5 1.4 0 2.5 1.1 2.5 2.5 0 1.4-1.1 2.5-2.5 2.5Z',
+                                        scale: item.icon_size,
+                                        anchor: new google.maps.Point(11, 22),
+                                        fillOpacity: 1,
+                                        fillColor: '#a9a9a9',
+                                        strokeOpacity: 0,
+                                        labelOrigin: new google.maps.Point(10, -5),
+                                    }
+                                });
+
+                                marker.metadata = { type: "point", id: item.id };
+
+                                if ('undefined' === typeof markers[key])
+                                    markers[key] = [];
+
+                                markers[key].push(marker);
+                                google.maps.event.addListener(marker, 'click', (function () {
+                                    closeInfoBox();
+                                    getInfoBox(item).open(mapObject, this);
+                                }));
+                            }
+
+
+                        }
+
+                    }
+                });
+
+            function closeInfoBox() {
+                $('div.marker-info').remove();
+            }
+
+            function getInfoBox(item) {
+                location.href = "#" + item.id;
+             }
+
+          function foc(latL, lngL)
+            {
+                mapObject.setCenter(new google.maps.LatLng(latL, lngL));
+            }
+
+
+
+        function hover(id) {
+            var icon2 = {
+                path: 'M11 2c-3.9 0-7 3.1-7 7 0 5.3 7 13 7 13 0 0 7-7.7 7-13 0-3.9-3.1-7-7-7Zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5 0-1.4 1.1-2.5 2.5-2.5 1.4 0 2.5 1.1 2.5 2.5 0 1.4-1.1 2.5-2.5 2.5Z',
+                scale: 2,
+                anchor: new google.maps.Point(11, 22),
+                fillOpacity: 1,
+                fillColor: '#FF0000',
+                strokeOpacity: 0,
+                labelOrigin: new google.maps.Point(10, -5)
+            };
+
+            for (var i = 0; i < markers['Marker'].length; i++) {
+                if (id === markers['Marker'][i].metadata.id) {
+                    icon = markers['Marker'][i].getIcon();
+                    markers['Marker'][i].setIcon(icon2);
+                    break;
+                }
+            }
+        };
+
+        function out(id) {
+
+                for (var i = 0; i < markers['Marker'].length; i++) {
+                    if (id === markers['Marker'][i].metadata.id) {
+                        markers['Marker'][i].setIcon(icon);
+                        break;
+                    }
+                }
+            }
+
+
+    </script>
+
+    <script src="/js/infobox.js"></script>
+}
+
+<div id="myModal2" class="modal2">
+
+    <!-- Modal content -->
+    <div class="modal-content2">
+        <span class="close2">&times;</span>
+        <br />
+        <p style="font-size: 20px; color: white; text-align: center; margin-bottom: 15px;" id="modalC">You can not book earlier than current date!</p>
+    </div>
+
+</div>
+
+<div id="myModal3" class="modal3">
+
+    <!-- Modal content -->
+    <div class="modal-content3">
+        <span class="close3">&times;</span>
+        <br />
+        <p style="font-size: 18px; color: white; text-align: center; margin-bottom: 15px;">Ups, unfortunately we are still not present in that city, stay tuned for more news</p>
+    </div>
+
+</div>
+
+<div id="myModal4" class="modal4">
+
+    <!-- Modal content -->
+    <div class="modal-content4">
+        <span class="close4">&times;</span>
+        <br />
+        <img src="~/Images/SpecialOffer.jpg" style="width:100%" />
+    </div>
+
+</div>
+
+<div id="myModal5" class="modal5">
+
+    <!-- Modal content -->
+    <div class="modal-content5">
+        <span class="close5">&times;</span>
+        <br />
+        <p style="font-size: 18px; color: white; text-align: center; margin-bottom: 15px;">
+            Please enter all required information drop off date, pick up date and number of bags on the top of this page.
+        </p>
+    </div>
+
+</div>
+
+<div id="myModal6" class="modal6">
+
+    <!-- Modal content -->
+    <div class="modal-content6">
+        <span class="close6">&times;</span>
+        <br />
+        <p style="font-size: 18px; color: white; text-align: center; margin-bottom: 15px;">
+            Working hours for store in Belgrade are Mon-Sat 09:00-17:30, Sunday closed
+        </p>
+    </div>
+
+</div>
+
+<style>
+
+    /* The Modal (background) */
+    .modal2 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 160px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content2 {
+        background-color: #40A629;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #888;
+        width: 30%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close2 {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close2:hover,
+        .close2:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* The Modal (background) */
+    .modal3 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 160px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content3 {
+        background-color: #40A629;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #888;
+        width: 38%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close3 {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close3:hover,
+        .close3:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* The Modal (background) */
+    .modal4 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 9999; /* Sit on top */
+        padding-top: 80px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content4 {
+        background-color: none;
+        margin: auto;
+        padding: 15px;
+        width: 38%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close4 {
+        color: #aaaaaa;
+        float: right;
+        margin-bottom: -30px;
+        margin-right: -10px;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close4:hover,
+        .close4:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+    /* The Modal (background) */
+    .modal5 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 9999; /* Sit on top */
+        padding-top: 160px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content5 {
+        background-color: #40A629;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #888;
+        width: 38%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close5 {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close5:hover,
+        .close5:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+    /* The Modal (background) */
+    .modal6 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 9999; /* Sit on top */
+        padding-top: 160px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content6 {
+        background-color: #40A629;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #888;
+        width: 30%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close6 {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close6:hover,
+        .close6:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+
+    .modal7 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 9999; /* Sit on top */
+        padding-top: 160px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content7 {
+        background-color: #40A629;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #888;
+        width: 30%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close7 {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close7:hover,
+        .close7:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+@if (Request.Browser.IsMobileDevice)
+{
+    <style>
+        .modal-content4 {
+            background-color: #40A629;
+            margin: auto;
+            padding: 15px;
+            border: 1px solid #888;
+            width: 87%;
+            font-weight: bold;
+        }
+    </style>
+}

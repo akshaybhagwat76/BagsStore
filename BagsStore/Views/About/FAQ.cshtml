@@ -1,0 +1,72 @@
+﻿
+@{
+    ViewBag.Title = "FAQ";
+    int i = 1;
+    int j = 0;
+}
+@using BagsStore.Models;
+<div class="breadcrumb-section">
+</div>
+
+<div class="page-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-12 faqs">
+                <h1 class="header">Frequently Asked Questions</h1>
+                <div class="inner">
+                    <h2 class="title">Recommended For You</h2>
+                    <ul id="accordion" class="accordion">
+                        @foreach (ViewItem item in ViewBag.faq)
+                        {
+                            j = item.Id;
+                            string col = "collapse" + i.ToString();
+                            <li class="item">
+                                <div class="data" data-toggle="collapse" data-target="#@col" aria-expanded="true">
+                                    <p class="question">@item.Title</p>
+                                    <div class="icon">
+                                        <i class="eye far fa-eye"></i>
+                                        <i class="eye-slash far fa-eye-slash"></i>
+                                    </div>
+                                </div>
+                                <div id="@col" class="collapse show" data-parent="#accordion">
+                                    <p class="answer">@item.SecondTitle</p>
+                                </div>
+                            </li>
+                            i++;
+                            break;
+                        }
+
+                        @foreach (ViewItem item in ViewBag.faq)
+                        {
+                            if (item.Id != j)
+                            {
+                                string col = "collapse" + i.ToString();
+                                <li class="item">
+                                    <div class="data" data-toggle="collapse" data-target="#@col" aria-expanded="false">
+                                        <p class="question">@item.Title</p>
+                                        <div class="icon">
+                                            <i class="eye far fa-eye"></i>
+                                            <i class="eye-slash far fa-eye-slash"></i>
+                                        </div>
+                                    </div>
+                                    <div id="@col" class="collapse" data-parent="#accordion">
+                                        <p class="answer">@item.SecondTitle</p>
+                                    </div>
+                                </li>
+                                i++;
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+
+            <div class="col-md-12">
+                <a style="float:right; color:#63A13C; font-weight:bold;" href="#" onclick="goBack()"><< Back</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+

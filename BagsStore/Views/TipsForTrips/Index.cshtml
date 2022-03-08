@@ -1,0 +1,74 @@
+﻿
+
+@using PagedList.Mvc;
+@using PagedList;
+@using BagsStore.Models;
+
+@section HeaderContent{
+  
+<title>Tips For Your Trips-Bag to Store</title>
+    <meta name="description" content="Useful tips for your trips. Travel and get valuable informations. Check what to visit in Ljubljana. Things to do in Ljubljana." />
+}
+
+
+<!-- import the included stylesheet for some (very basic) default styling -->
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<div class="breadcrumb-section">
+</div>
+<div class="page-wrapper">
+    <div class="container">
+        <h3 style="text-align:center">Tips for trips</h3>
+        <div class="row mt-3">
+
+            <div class="col-12 col-lg-8">
+                @foreach (ViewItem item in ViewBag.OnePageOfProducts)
+                {
+                    String title = item.Title.Replace(' ', '-');
+                    <div class="news-item standard">
+                        <div class="image">
+                            <a href="/post?t=@title"><img class="img-fluid" src="~/Images/@item.Image" alt="" /></a>
+                        </div>
+                        <div class="content">
+
+                            <a class="title" href="/post?t=@title">@item.Title</a>
+                            <div class="description">
+                                @Html.Raw(item.SortDesc)
+                            </div>
+                            <a class="btn-one mt-4" href="/post?t=@title">Read More<i class="fas fa-angle-double-right pl-2"></i></a>
+                        </div>
+                    </div>
+                }
+            </div>
+            <aside class="col-12 col-lg-4 sidebar">
+                <div class="sidebar-box">
+                    <p class="sidebar-title">Explore</p>
+                    <div class="explore-item">
+                        <img class="img-fluid" src="/img/source/nature1.jpg">
+                        <a class="title" href="#">Sea Beach</a>
+                        <p class="location">502 Little Lonsdale, Melbourne</p>
+                        <a class="heart-icon" href="#"><i class="far fa-heart"></i></a>
+                    </div>
+
+                    <div class="explore-item">
+                        <img class="img-fluid" src="/img/source/nature2.jpg">
+                        <a class="title" href="#">Nice Hills</a>
+                        <p class="location">502 Little Lonsdale, Melbourne</p>
+                        <a class="heart-icon" href="#"><i class="far fa-heart"></i></a>
+                    </div>
+
+                    <div class="explore-item">
+                        <img class="img-fluid" src="/img/source/nature3.jpg">
+                        <a class="title" href="#">Beauty Place</a>
+                        <p class="location">502 Little Lonsdale, Melbourne</p>
+                        <a class="heart-icon" href="#"><i class="far fa-heart"></i></a>
+                    </div>
+                </div>
+
+            </aside>
+        </div>
+        <div class="row">
+            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Index", "Blog", new { page }))
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+﻿
+@{
+    /**/
+
+    ViewBag.Title = "HowItWorks";
+}
+@model BagsStore.Models.ItemContent
+
+@section HeaderContent{
+  
+<title>Luggage Storage Reservation in a Few Minutes-Bag to Store</title>
+    <meta name="description" content="Reserve your luggage storage in a few minutes. Visit www.bagtostore.com" />
+    <link rel="canonical" href="https://bagtostore.com/how-it-works" />
+}
+
+<div class="breadcrumb-section">
+</div>
+
+<div class="page-wrapper">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="col-md-12">
+
+                    <h1 class="title text-center mb-3">@Model.Title</h1>
+
+                    @Html.Raw(Model.Content)
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <img class="img-fluid" src="/images/@Model.BigImage" />
+
+            </div>
+
+        </div>
+
+        <div class="row mt-5">
+
+            <div class="col-md-6">
+                <!-- Go to www.addthis.com/dashboard to customize your tools --> <div class="addthis_inline_share_toolbox"></div>
+            </div>
+
+            <div class="col-md-6">
+                <a style="float:right; color:#63A13C; font-weight:bold;" href="#" onclick="goBack()"><< Back</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

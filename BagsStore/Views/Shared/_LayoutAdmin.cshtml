@@ -1,0 +1,93 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <title>Administration</title>
+    <link rel="stylesheet" href="~/Content/style.css" type="text/css" media="all" />
+    <script src="~/ckeditor/ckeditor.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+
+    <div id="header">
+        <div class="shell">
+            <!-- Logo + Top Nav -->
+            <div id="top">
+                <h1><a href="#">Администрација</a></h1>
+                <div id="top-navigation">
+                    Добредојде <a href="#"><strong> @Session["admin"]</strong></a>
+                    <span>|</span>
+                    <a href="@Url.Action("LogOut","Admin")">Одјави се</a>
+                    <a href="/" target="_blank">Почетна</a>
+                </div>
+            </div>
+            <!-- End Logo + Top Nav -->
+            <!-- Main Nav -->
+            <div id="navigation">
+                <ul>
+                    <li><a href="@Url.Action("Index","Admin")" class="active"><span>Уредување на резервации</span></a></li>
+                </ul>
+
+                <ul>
+                    <li><a href="@Url.Action("EditBecomeOurPartner","Admin")" class="active"><span>Уредување на Become our partner</span></a></li>
+                </ul>
+
+                <ul>
+                    <li><a href="@Url.Action("EditWhoAreWe","Admin")" class="active"><span>Уредување на Who are we</span></a></li>
+                </ul>
+
+                <ul>
+                    <li><a href="@Url.Action("EditHowItWorks","Admin")" class="active"><span>Уредување на How it Works</span></a></li>
+                </ul>
+
+                <ul>
+                    <li><a href="@Url.Action("FAQ","Admin")" class="active"><span>Уредување на FAQ</span></a></li>
+                </ul>
+
+                <ul>
+                    <li><a href="@Url.Action("EditPrivacyPolicy","Admin")" class="active"><span>Уредување на Privacy policy</span></a></li>
+                </ul>
+
+                <ul>
+                    <li><a href="@Url.Action("EditTerms","Admin")" class="active"><span>Уредување на Terms and conditions</span></a></li>
+                </ul>
+
+                <ul>
+                    <li><a href="@Url.Action("EditPicture","Admin")" class="active"><span>Уредување на слика почетна</span></a></li>
+                </ul>
+                <ul>
+                    <li><a href="@Url.Action("Blog","Admin")" class="active"><span>Уредување на Blog</span></a></li>
+                </ul>
+                <ul>
+                    <li><a href="@Url.Action("Reviews","Admin")" class="active"><span>Уредување на Reviews</span></a></li>
+                </ul>
+                <ul>
+                    <li><a href="@Url.Action("Locations","Admin")" class="active"><span>Location</span></a></li>
+                </ul>
+                <ul>
+                    <li><a href="@Url.Action("Stores","Admin")" class="active"><span>Stores</span></a></li>
+                </ul>
+            </div>
+            <!-- End Main Nav -->
+        </div>
+    </div>
+
+   @RenderBody()
+
+    <div id="footer">
+        <div class="shell">
+            <span class="left">&copy; @DateTime.Now.Year - Администрација</span>
+            <span class="right">
+                Design by <a href="http://netarchitecture.de/" target="_blank" title="">Netarchitecture</a>
+            </span>
+        </div>
+    </div>
+
+
+</body>
+</html>

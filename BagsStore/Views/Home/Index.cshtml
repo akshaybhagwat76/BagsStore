@@ -1,0 +1,1068 @@
+﻿@using BagsStore.Models;
+@{
+    Picture p = ViewBag.p;
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<!-- jQuery library -->
+<!-- Latest compiled JavaScript -->
+@*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">*@
+
+@*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/css/style.css">*@
+
+@section HeaderContent{
+    <meta property="og:title" content="Bag to Store" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Bag to Store is a startup company based in Ljubljana, Slovenia. The idea of opening a company for bag storage came after many trips and many struggling with the luggage. No, we know that we are not the first one offering this service, but we are most reliable ones." />
+    <meta property="og:url" content="https://bagtostore.com/" />
+
+    <title>Bag Storage Network - Bag to Store</title>
+    <meta name="description" content="Luggage Storage near you. Only 3,99€. Fixed price. Close to bus and train station. Safe and Reliable." />
+    <link rel="canonical" href="https://bagtostore.com/" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://embed.tawk.to" />
+    <link rel="preconnect" href="https://va.tawk.to" />
+    @*<link rel="preload" href="~/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="~/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin />*@
+    <link rel="preload" href="~/css/font-awesome.css" as="font" type="font/woff2" crossorigin />
+    <meta name="google-site-verification" content="GjPlrFSGabDlr1vK2NKIktIlNh45_SFNQXsBinMsjVU" />
+}
+
+
+@if (Request.Browser.IsMobileDevice)
+{
+    <style>
+        .xdsoft_current {
+            background-color: green !important;
+        }
+
+        .xdsoft_datetimepicker .xdsoft_calendar td:hover, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
+            background-color: lightgreen !important;
+            color: black !important;
+            font-weight: bold;
+        }
+    </style>
+}
+else
+{
+    <style>
+
+        .xdsoft_current {
+            background-color: green !important;
+        }
+
+        .xdsoft_datetimepicker .xdsoft_calendar td:hover, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
+            background-color: lightgreen !important;
+            color: black !important;
+            font-weight: bold;
+        }
+
+        .text {
+            font-size: 25px !important;
+        }
+    </style>
+}
+<section class="header">
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <bold><h1>LUGGAGE STORAGE <br>FOR 3,99 EUR PER DAY!</h1></bold>
+                <h2>Most reliable bag storage near you!</h2>
+                <a href="#search" class="btn">Explore Now &#8594;</a>
+            </div>
+            <div class="col-2">
+                <img src="~/Images/Image-Opt.png" alt="Luggage">
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="second-header" id="search" style="padding: 20px;">
+    <div class="container">
+        <div style="background-color:#40A629; padding:20px; margin:0 -50px;">
+            <form method="POST" id="searchForm">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="input-group">
+                            <input type="hidden" id="lat" name="lat" value="@ViewBag.latLj" />
+                            <input type="hidden" id="lng" name="lng" value="@ViewBag.lngLj" />
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <input style="border:0!important;" id="loc" name="where" type="hidden" />
+                                    <select id="city" name="city" style="width:102px;border:none;">
+                                        <option value="0">Where?</option>
+                                            @foreach (Location loc in ViewBag.locate)
+                                            {
+                                            <option value="@loc.Id">@loc.Name</option>
+                                             }
+                                        </select>
+                                        <div class="input-group-append">
+                                            <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-search"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+
+                                        <input autocomplete="off" class="form-control" id="input" onchange="checkDropOff()" placeholder="Drop-off" name="dropOff" required />
+                                        <div class="input-group-append">
+                                            <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+
+                                        <input autocomplete="off" class="form-control" id="input1" onchange="checkPickUp()" placeholder="Pick-up" name="pickUp" required />
+                                        <div class="input-group-append">
+                                            <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <input style="border:0!important;" required type="number" min="1" onfocus="this.value='1'" class="form-control" name="objects" placeholder="Bags">
+                                        <div class="input-group-append">
+                                            <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-luggage-cart"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <input style="width:100%!important; height:100%!important;" type="submit" class="btn-one" value="Search">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    @*auxesistesting@gmail.com/test@1234
+                paypal test credentials: ID- sb-lmvc67080261@personal.example.com
+
+        PWD-rxOO0+^u
+    *@
+
+
+    <script>
+       
+        $('#input').datetimepicker({ step: 30, defaultTime: '12:00' });
+        $('#input1').datetimepicker({ step: 30, defaultTime: '12:00' });
+
+
+        function checkDropOff() {
+            var dropOff = $("#input").val();
+            var date = new Date(dropOff);
+
+            if (date < new Date()) {
+
+                var modal = document.getElementById("myModal2");
+                var span = document.getElementsByClassName("close2")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                modal.style.display = "block";
+                $("#input").val("");
+            }
+
+        }
+
+        function checkPickUp() {
+            var pickUp = $("#input1").val();
+            var date = new Date(pickUp);
+
+            var dropOff = $("#input").val();
+            var date2 = new Date(dropOff);
+
+            if (date < new Date()) {
+
+                var modal = document.getElementById("myModal2");
+                var span = document.getElementsByClassName("close2")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                $("#modalC").html("You cannot book earlier than current date!");
+                modal.style.display = "block";
+                $("#input1").val("");
+            }
+
+            if (date < date2) {
+
+                var modal = document.getElementById("myModal2");
+                var span = document.getElementsByClassName("close2")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                $("#modalC").html("You cannot book earlier than drop off date!");
+                modal.style.display = "block";
+
+                $("#input1").val("");
+            }
+        }
+
+    </script>
+
+    <div id="myModal2" class="modal2">
+
+        <!-- Modal content -->
+        <div class="modal-content2">
+            <span class="close2">&times;</span>
+            <br />
+            <p style="font-size: 20px; color: white; text-align: center; margin-bottom: 15px;" id="modalC">You cannot book earlier than current date!</p>
+        </div>
+
+    </div>
+
+    <div id="myModal3" class="modal3">
+
+        <!-- Modal content -->
+        <div class="modal-content3">
+            <span class="close3">&times;</span>
+            <br />
+            <p style="font-size: 18px; color: white; text-align: center; margin-bottom: 15px;">Ups, unfortunately we are still not present in that city, stay tuned for more news</p>
+        </div>
+
+    </div>
+
+    <!--<div id="myModal4" class="modal4">-->
+    <!-- Modal content -->
+    <!--<div class="modal-content4">
+            <span class="close4">&times;</span>
+            <br />
+            <img src="~/Images/SpecialOffer.jpg" style="width:100%" />
+        </div>
+
+    </div>-->
+
+    <div id="myModal6" class="modal6">
+
+        <!-- Modal content -->
+        <div class="modal-content6">
+            <span class="close6">&times;</span>
+            <br />
+            <p style="font-size: 18px; color: white; text-align: center; margin-bottom: 15px;" id="modal6p">
+
+            </p>
+        </div>
+
+    </div>
+
+    <div id="myModal7" class="modal7">
+
+        <!-- Modal content -->
+        <div class="modal-content7">
+            <span class="close7">&times;</span>
+            <br />
+            <p style="        font-size: 18px;
+        color: white;
+        text-align: center;
+        margin-bottom: 15px;">
+                Store in Bled is closed on 25.12, 31.12 and 1.1
+            </p>
+        </div>
+
+    </div>
+
+    <div id="myModal8" class="modal8">
+
+        <!-- Modal content -->
+        <div class="modal-content8">
+            <span class="close8">&times;</span>
+            <br />
+            <p style="font-size: 18px; color: white; text-align: center; margin-bottom: 15px;">
+                Store in Ljubljana is closed on 13.02
+            </p>
+        </div>
+
+    </div>
+    <style>
+
+        /* The Modal (background) */
+        .modal2 {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 160px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content2 {
+            background-color: #40A629;
+            margin: auto;
+            padding: 15px;
+            border: 1px solid #888;
+            width: 30%;
+            font-weight: bold;
+        }
+
+        /* The Close Button */
+        .close2 {
+            color: white;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close2:hover,
+            .close2:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        /* The Modal (background) */
+        .modal3 {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 160px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content3 {
+            background-color: #40A629;
+            margin: auto;
+            padding: 15px;
+            border: 1px solid #888;
+            width: 38%;
+            font-weight: bold;
+        }
+
+        /* The Close Button */
+        .close3 {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close3:hover,
+            .close3:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        /* The Modal (background) */
+        .modal4 {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 9999; /* Sit on top */
+            padding-top: 80px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content4 {
+            background-color: none;
+            margin: auto;
+            padding: 15px;
+            width: 38%;
+            font-weight: bold;
+        }
+
+        /* The Close Button */
+        .close4 {
+            color: #aaaaaa;
+            float: right;
+            margin-bottom: -30px;
+            margin-right: -10px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close4:hover,
+            .close4:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+
+        .modal6 {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 9999; /* Sit on top */
+            padding-top: 160px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content6 {
+            background-color: #40A629;
+            margin: auto;
+            padding: 15px;
+            border: 1px solid #888;
+            width: 30%;
+            font-weight: bold;
+        }
+
+        /* The Close Button */
+        .close6 {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close6:hover,
+            .close6:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+
+        .modal7 {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 9999; /* Sit on top */
+            padding-top: 160px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content7 {
+            background-color: #40A629;
+            margin: auto;
+            padding: 15px;
+            border: 1px solid #888;
+            width: 30%;
+            font-weight: bold;
+        }
+
+        /* The Close Button */
+        .close7 {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close7:hover,
+            .close7:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .modal8 {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 9999; /* Sit on top */
+            padding-top: 160px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content8 {
+            background-color: #40A629;
+            margin: auto;
+            padding: 15px;
+            border: 1px solid #888;
+            width: 30%;
+            font-weight: bold;
+        }
+
+        /* The Close Button */
+        .close8 {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close8:hover,
+            .close8:focus {
+                color: #000;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+        .working-progress .item img {
+            width: 40%;
+            margin-bottom: 25px;
+        }
+    </style>
+
+
+    <section class="working-progress">
+        <div class="container">
+            <div class="section-header text-center">
+                <h2>How It Works</h2>
+                <div class="border"></div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="item">
+                        <div class="">
+                            <img class="" src="~/Images/1.png" alt="Create Your Account">
+                        </div>
+                        <p class="title">→ 1 ←</p>
+                        <h6 class="title" href="">Find luggage storage near you<br />&nbsp;</h6>
+                        <p>
+                            We cover locations from main bus and train stations to the inner city. Choose one that suits you the best.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="item">
+                        <div class="">
+                            <img class="" src="~/Images/2.png" alt="Select Your Destination">
+                        </div>
+                        <p class="title">→ 2 ←</p>
+                        <h6 class="title" href="#">Make a booking<br />&nbsp;<br />&nbsp;</h6>
+                        <p>
+                            Easy and fast booking through our platform.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 offset-md-3 col-lg-3 offset-lg-0">
+                    <div class="item">
+                        <div class="">
+                            <img class="" src="~/Images/3.png" alt="Make A Reservation">
+                        </div>
+                        <p class="title">→ 3 ←</p>
+                        <h6 class="title" href="#">Check in your bags in our store<br />&nbsp;</h6>
+                        <p>
+                            Follow google maps link sent to your email, find our store and drop off your baggage.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 offset-md-3 col-lg-3 offset-lg-0">
+                    <div class="item">
+                        <div class="">
+                            <img class="" src="~/Images/4.png" alt="Enjoy">
+                        </div>
+                        <p class="title">→ 4 ←</p>
+                        <h6 class="title" href="#">Explore the city luggage free</h6>
+                        <p>
+                            That's it. Grab free city map and enjoy exploring the city while we take care of your baggage.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <style>
+
+        svg {
+            width: 100px;
+            height: 100px;
+        }
+
+            svg path {
+                fill: gray !important;
+            }
+    </style>
+
+    <script>
+
+        $(function () {
+
+            /*window.onload = setTimeout(function () {
+                var modal = document.getElementById("myModal4");
+                var span = document.getElementsByClassName("close4")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                modal.style.display = "block";
+            }, 5000);*/
+
+            jQuery('img.svg').each(function () {
+                var $img = jQuery(this);
+                var imgID = $img.attr('id');
+                var imgClass = $img.attr('class');
+                var imgURL = $img.attr('src');
+
+                jQuery.get(imgURL, function (data) {
+                    // Get the SVG tag, ignore the rest
+                    var $svg = jQuery(data).find('svg');
+
+                    // Add replaced image's ID to the new SVG
+                    if (typeof imgID !== 'undefined') {
+                        $svg = $svg.attr('id', imgID);
+                    }
+                    // Add replaced image's classes to the new SVG
+                    if (typeof imgClass !== 'undefined') {
+                        $svg = $svg.attr('class', imgClass + ' replaced-svg');
+                    }
+
+                    // Remove any invalid XML tags as per http://validator.w3.org
+                    $svg = $svg.removeAttr('xmlns:a');
+
+                    // Check if the viewport is set, else we gonna set it if we can.
+                    if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
+                        $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'))
+                    }
+
+                    // Replace image with new SVG
+                    $img.replaceWith($svg);
+
+                }, 'xml');
+
+            });
+        });
+
+    </script>
+    <div class="small-container">
+        <h2 class="title">Top Cities</h2>
+        <div class="border"></div>
+        <div class="row">
+            <div class="col-4">
+                <a href="~/luggage-storage/ljubljana"><img src="~/Images/ljubljana-2687908_640.jpg"></a>
+                <a href="~/luggage-storage/ljubljana"><h5>Luggage Storage Ljubljana</h5></a>
+            </div>
+            <div class="col-4">
+                <a href="~/luggage-storage/vienna"><img src="~/Images/vienna-1544015_640.jpg"></a>
+                <a href="~/luggage-storage/vienna"><h5>Luggage Storage Vienna</h5></a>
+            </div>
+            <div class="col-4">
+                <a href="~/luggage-storage/bled"><img src="~/Images/church-5748901_640.jpg"></a>
+                <a href="~/luggage-storage/bled"><h5>Luggage Storage Bled</h5></a>
+            </div>
+            <div class="col-4">
+                <a href="~/luggage-storage/belgrade"><img src="~/Images/belgrade-4591667_640.jpg"></a>
+                <a href="~/luggage-storage/belgrade"><h5>Luggage Storage Belgrade</h5></a>
+            </div>
+        </div>
+    </div>
+
+    <!------- testimonial --------->
+    <!--<div class="demo">
+        <h2>Testimonials</h2>
+        <div class="border"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="testimonial-slider" class="owl-carousel">
+                        <div class="testimonial">
+                            <span class="icon fa fa-quote-left"></span>
+                            <p class="description">
+                                If you’re coming to Ljubljana and don’t know what to do with all your bags this is the place to go! The owner is so kind and trustworthy + if you don’t know what to do she’ll gladly provide suggestions.
+                            </p>
+                            <div class="testimonial-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="post">Gretchen K.</span>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <span class="icon fa fa-quote-left"></span>
+                            <p class="description">
+                                Lovely place to store luggage! The owner was so kind and friendly, and was very flexible with times for pick up. It is very close to the Ljubljana bus and train station, and the place was very secure and clean. It was very cheap as well! I would definitely recommend if you need a place to store your luggage for a day.
+                            </p>
+                            <div class="testimonial-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="post">Alicia L.</span>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <span class="icon fa fa-quote-left"></span>
+                            <p class="description">
+                                I had a great experience with their service. Ljubljana is lacking places to store your luggage and Bag to Store proved to be cheap, realiable and really close to the center. And you can book online. Great service.
+                            </p>
+                            <div class="testimonial-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="post">U. Zalar</span>
+                            </div>
+                        </div>
+
+                        <div class="testimonial">
+                            <span class="icon fa fa-quote-left"></span>
+                            <p class="description">
+                                Was looking for a place to store my bag as I had been staying at an airbnb and was not able to leave my bags there. Was just my luck that this place was there to save me! Highly recommend anyone use this if they have a later flight or bus so you can explore the city without the hassle of carrying your bags!
+                            </p>
+                            <div class="testimonial-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="post">Matthew G.</span>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <span class="icon fa fa-quote-left"></span>
+                            <p class="description">
+                                Their service is great, simple and reliable, the best in Ljubljana. We droped our bags in the morning and stored them for a very reasonable price. And also, price was the same even for the biggest suitcase which is a really good deal.
+                            </p>
+                            <div class="testimonial-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="post">Luka S.</span>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <span class="icon fa fa-quote-left"></span>
+                            <p class="description">
+                                Excellent location, close to Ljubljana bus/train station and in same time at the heart of Ljubljana. You can agree about the drop of and pick up time which is really great regarding the travel schedule. They keep the bags professionally, and take care not to damage them. I was able to walk around Ljubljana only with my purse because my two suitcases were at Bag to store.
+                            </p>
+                            <div class="testimonial-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="post">Hristina V.</span>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <span class="icon fa fa-quote-left"></span>
+                            <p class="description">
+                                My flight was rescheduled for 10 hours, so I decided to go in center and take a tour, since it was my first time in Ljubljana. As I was struggling to find a place to storage my large luggage in Ljubljana, (after trying the bus station and failed) I googled luggage storage in Ljubljana and found the best one. I checked their page on Facebook and found also information about what to visit in Ljubljana.
+                            </p>
+                            <div class="testimonial-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="post">Tringë L.</span>
+                            </div>
+                        </div>
+                        <div class="testimonial">
+                            <span class="icon fa fa-quote-left"></span>
+                            <p class="description">
+                                I was traveling to Austria and visited Ljubljana for one day with intention to visit the Castle and to walk around Ljubljana. I was unable to do this with three huge bags, I left the bags at the store and after the sightseeing I continued my trip.
+                            </p>
+                            <div class="testimonial-content">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="post">Mila J.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#testimonial-slider").owlCarousel({
+                items: 3,
+                itemsDesktop: [1000, 3],
+                itemsDesktopSmall: [979, 2],
+                itemsTablet: [768, 2],
+                itemsMobile: [650, 1],
+                pagination: true,
+                autoPlay: true
+            });
+        });
+    </script>-->
+
+    <section class="working-progress second-progress">
+        <div class="container">
+            <div class="section-header text-center" style="margin-bottom: 0px!important;">
+                <h4 class="section-text text-uppercase">
+                    Why to Choose Us
+                </h4>
+                <p style="margin: 0 auto; width:80%;text-align:left !important">
+                    Bag to Store is created by travelers and for travelers, therefore we offer you reliable and safe solution near you for your baggage with fixed and affordable prices. Days worrying about where to store your luggage after checking out from your accommodation or where to store your bags on a one day trip are over.  Make your trip experience even better and let us take care of your bags.
+                </p>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="item3">
+                        <div class="icon">
+                            <i style="color:#40A629!important" class="fas fa-user-tie fa-3x"></i>
+                        </div>
+                        <h6 class="title" href="#">We are professional<br />&nbsp;</h6>
+                        <p>
+                            We strive to give you best service possible by fullfiling your needs.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="item3">
+                        <div class="icon">
+                            <i style="color:#40A629!important" class="fas fa-dollar-sign fa-3x"></i>
+                        </div>
+                        <h6 class="title" href="#">Fixed price<br />&nbsp;</h6>
+                        <p>
+                            No hidden cost. No surprises. You pay what you see.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 offset-md-3 col-lg-3 offset-lg-0">
+                    <div class="item3">
+                        <div class="icon">
+                            <i style="color:#40A629!important" class="fas fa-shield-alt fa-3x"></i>
+                        </div>
+                        <h6 class="title" href="#">We are trusted and secured</h6>
+                        <p>
+                            Your luggage is safe and secured with us, out of public access. Upon check in you get personalised code.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 offset-md-3 col-lg-3 offset-lg-0">
+                    <div class="item3">
+                        <div class="icon">
+                            <i style="color:#40A629!important" class="fas fa-phone fa-3x"></i>
+                        </div>
+                        <h6 class="title" href="#">Online support 24/7</h6>
+                        <p>
+                            For any inquries our team is always ready to assist you and find the easiest possible solution.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!------- brands --------->
+    <section>
+        <div class="container text-center">
+            <div class="demo">
+                <h2>Our Partners</h2>
+            </div>
+            <div class="border"></div>
+            <div class="container">
+                <br>
+                <div class="row" style="margin-bottom:20px">
+                    <div class="col-sm-2">
+                        <img src="https://cdn.flixbus.de/d7files/content-image/flixbus_logoicon_rgb.png" class="img-responsive" width="100" alt="Flixbus">
+                    </div>
+                    <div class="col-sm-2">
+                        <img src="https://slavjanskijbulvar.si/datoteke/uploads/2019/11/easydrive2019-1024x576.png" class="img-responsive" width="100" alt="EasyDrive">
+                    </div>
+                    <div class="col-sm-2">
+                        <img src="https://i0.wp.com/www.letsgoslovenia.si/wp-content/uploads/2017/06/cropped-lets-go-slovenia-logo6-2.png?fit=151%2C110&ssl=1" class="img-responsive" width="80" alt="LetsGoSlovenia">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    @section FooterContent{
+        <script>
+        $(function () {
+
+            var locs = @Html.Raw(Json.Encode(ViewBag.locs));
+            var pop = '@ViewBag.pop';
+
+            if (pop == 'True') {
+                var modal = document.getElementById("myModal3");
+                var span = document.getElementsByClassName("close3")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                modal.style.display = "block";
+            }
+            //--- Rishma Changed this function --- like changed id, url 27/02/2022
+            $('#city').change(function (e) {
+               
+                if ($('#city').val() == "0")
+                {
+                   // var url = "/luggage-storage/search";
+                    var url = "/luggage-storage/In/ljubljana";
+                    $('#searchForm').attr('action', url);
+                    getLocation();
+                }
+                else
+                {
+                    var val = $('#city').val();
+                    var place = $("#city option:selected").text();
+                    $("#loc").val(place);
+                    if (!locs.includes(place))
+                    {
+                        var modal = document.getElementById("myModal3");
+                        var span = document.getElementsByClassName("close3")[0];
+
+                        span.onclick = function () {
+                            modal.style.display = "none";
+                        }
+
+                        window.onclick = function (event) {
+                            if (event.target == modal) {
+                                modal.style.display = "none";
+                            }
+                        }
+
+                        modal.style.display = "block";
+                        $('#loc').val("");
+                    }
+
+                    var url = "/luggage-storage/In/" + place;
+                    $('#searchForm').attr('action', url);
+                    
+                    $.ajax({
+                        url: '/Home/GetLoc',
+                        type: 'POST',
+                        data: JSON.stringify({ place: place }),
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data != false)
+                            {
+                                $("#lat").val(data[0]);
+                                $("#lng").val(data[1]);
+                            }
+
+
+
+                        }
+                    });
+                }
+            });
+        });
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                $("#loc").val("");
+                alert("Geolocation is not supported by this browser");
+            }
+        }
+
+        function showPosition(position) {
+            $("#lat").val(position.coords.latitude);
+            $("#lng").val(position.coords.longitude);
+            $("#loc").val("My Location");
+        }
+
+        </script>
+    }
+
+
+    @if (Request.Browser.IsMobileDevice)
+    {
+        <style>
+            .modal-content4 {
+                background-color: none;
+                margin: auto;
+                padding: 15px;
+                width: 87%;
+                font-weight: bold;
+            }
+        </style>
+    }
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/css/style.css">

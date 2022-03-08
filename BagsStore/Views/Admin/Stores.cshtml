@@ -1,0 +1,150 @@
+﻿@model IEnumerable<BagsStore.ViewModel.ShowStore_VM>
+
+@{
+    ViewBag.Title = "Stores";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+@using BagsStore.Models;
+@using BagsStore.ViewModel;
+<!-- import the included stylesheet for some (very basic) default styling -->
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<style>
+    .h2-page-heading {
+        padding: 10px;
+        font-size: 15px;
+        text-align: center;
+    }
+</style>
+<div id="container">
+    <div class="shell">
+
+        <!-- Small Nav -->
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <div class="box">
+                    <h2 class="h2-page-heading">Stores List</h2>
+                    <hr />
+                    <!-- Box Head -->
+                    <!-- End Box Head -->
+                    <!-- Table -->
+                    <div class="table" style="max-width:750px;max-height:500px;overflow:auto;">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <th>Name</th>
+                                <th>Street</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                                <th>Type</th>
+                                <th>WorkingHours</th>
+                                <th>Price</th>
+                                <th>Picture</th>
+                                <th>Partner</th>
+                                <th>Location</th>
+                                <th>Email</th>
+                                @*<th>MapPicture</th>*@
+                                <th>Link</th>
+                                <th>RealName</th>
+                                <th>HourFrom</th>
+                                <th>HourTo</th>
+                                <th>Services</th>
+                                <th>DayOff</th>
+                                <th>Additional</th>
+                                @*<th>PictureMobile</th>*@
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            @foreach (ShowStore_VM item in ViewBag.OnePageOfProducts)
+                            {
+                                <tr>
+                                    <td><h3><a href="#">@item.Name</a></h3></td>
+                                    <td><h3><a href="#">@item.Street</a></h3></td>
+                                    <td><h3><a href="#">@item.Latitude</a></h3></td>
+                                    <td><h3><a href="#">@item.Longitude</a></h3></td>
+                                    <td><h3><a href="#">@item.Type</a></h3></td>
+                                    <td><h3><a href="#">@item.WorkingHours</a></h3></td>
+                                    <td><h3><a href="#">@item.Price</a></h3></td>
+                                    <td><img src="@item.Picture" style="height:70px;width:70px;" /></td>
+                                    <td><h3><a href="#">@item.Partner</a></h3></td>
+                                    <td><h3><a href="#">@item.Location</a></h3></td>
+                                    <td><h3><a href="#">@item.Email</a></h3></td>
+                                    @*<td><h3><a href="#">@item.MapPicture</a></h3></td>*@
+                                    <td><h3><a href="#">@item.Link</a></h3></td>
+                                    <td><h3><a href="#">@item.RealName</a></h3></td>
+                                    <td><h3><a href="#">@item.HourFrom</a></h3></td>
+                                    <td><h3><a href="#">@item.HourTo</a></h3></td>
+                                    <td><h3><a href="#">@item.Services</a></h3></td>
+                                    <td><h3><a href="#">@item.DayOff</a></h3></td>
+                                    <td><h3><a href="#">@item.Additional</a></h3></td>
+                                    @*<td><h3><a href="#">@item.PictureMobile</a></h3></td>*@
+                                    <td>
+                                        <a href="@Url.Action("DeleteStore", "Admin", new { id = item.Id })" class="ico del">Delete</a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("EditStore", "Admin", new { id = item.Id })" class="ico edit">Edit</a>
+                                    </td>
+                                </tr>
+
+
+                            }
+
+                            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("Locations", "Admin", new { page }))
+
+                        </table>
+
+
+                        <!-- Pagging -->
+                        <div class="pagging">
+
+                        </div>
+                        <!-- End Pagging -->
+
+                    </div>
+                    <!-- Table -->
+
+                </div>
+                <!-- End Box -->
+                <!-- Box -->
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <div id="sidebar">
+
+                <!-- Box -->
+                <div class="box">
+
+                    <!-- Box Head -->
+                    <!-- End Box Head-->
+
+                    <div class="box-content">
+                        <a href="@Url.Action("CreateStore","Admin")" class="add-button"><span>Create</span></a>
+                        <div class="cl">&nbsp;</div>
+
+                    </div>
+                </div>
+                <!-- End Box -->
+            </div>
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>
+

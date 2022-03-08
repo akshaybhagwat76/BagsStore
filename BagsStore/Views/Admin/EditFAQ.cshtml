@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using BagsStore.Models
+
+@{
+    Item item = ViewBag.item;
+    ItemContent itemContent = ViewBag.itemContent;
+}
+
+
+<div id="container" style="width:100%">
+    <div class="shell">
+
+        <!-- Small Nav -->
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <!-- End Box -->
+                <!-- Box -->
+                <div class="box">
+                    <!-- Box Head -->
+                    <div class="box-head">
+                        <h2>Измени</h2>
+                    </div>
+                    <!-- End Box Head -->
+                    @using (Html.BeginForm(
+                    null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        <input type="hidden" name="id" value="@itemContent.Id" />
+         
+
+                        <!-- Form -->
+                        <div class="form">
+
+                            <p>
+                                <label>Внеси прашање</label>
+                                <input required type="text" name="title" class="field size1" value="@itemContent.Title"/>
+                            </p>
+
+                            <p>
+                                <label>Внеси одговор</label>
+                                <textarea required name="secondTitle" class="field size1">@itemContent.SecondTitle</textarea>
+                                
+                            </p>
+
+                        </div>
+                        <!-- End Form -->
+                        <!-- Form Buttons -->
+                        <div class="buttons">
+                            <input type="submit" class="button" value="Измени" />
+                        </div>
+                        <!-- End Form Buttons -->
+                    }
+                </div>
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>

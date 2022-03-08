@@ -1,0 +1,105 @@
+﻿<div class="breadcrumb-section">
+    <div class="container">
+        <h4 class="breadcrumb-title">Contact Us</h4>
+        <ul class="breadcrumb-menu">
+            <li><a href="index.html">Home</a></li>
+            <li class="active"><a href="contact.html">Contact Us</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="contact-us">
+    <div class="full-map">
+        <div id="map"></div>
+    </div>
+    <div class="page-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-5 col-lg-4 offset-lg-1">
+                    <div class="inner-box">
+                        <h4 class="header">Our Core Values</h4>
+                        <p class="sub-header">Lorem ipsum dolor sit amet, consecte<br>tur adipisicing elit, sed do</p>
+                        <div class="inner">
+                            <div class="content">
+                                <div class="icon">
+                                    <i class="fas fa-envelope-open"></i>
+                                    Email
+                                </div>
+                                <p class="text">info@gmail.com</p>
+                                <p class="text">support@gmail.com</p>
+                            </div>
+                            <div class="content">
+                                <div class="icon">
+                                    <i class="fas fa-phone"></i>
+                                    Call Us
+                                </div>
+                                <p class="text">+(202) 555-0178</p>
+                                <p class="text">+(202) 123-4567</p>
+                            </div>
+                            <div class="content">
+                                <div class="icon">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    Head Office
+                                </div>
+                                <p class="text">7650 Washington Avenue,<br>Suite 315 Miami Beach</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-7 col-lg-7">
+                    <div class="section-header">
+                        <p class="section-title">
+                            Any Questions
+                        </p>
+                        <h4 class="section-text">
+                            Let's Talk
+                        </h4>
+                    </div>
+                    <form method="POST">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Name:">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="input-group">
+                                    <input type="email" class="form-control" placeholder="Email:">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Subject:">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fas fa-pen"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="input-group textarea">
+                                    <textarea class="form-control" placeholder="Write A Message" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <input type="submit" class="btn-one" value="Send Message">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section FooterContent{
+    <!-- Google Map -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDon8-uDyCcyAH9151UzJZpXd3fE1j1U8&libraries=places&callback=initMap"></script>
+    <script src="/js/maps.js"></script>
+    <script src="/js/infobox.js"></script>
+}

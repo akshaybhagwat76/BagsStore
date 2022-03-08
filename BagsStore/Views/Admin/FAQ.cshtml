@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<!-- import the included stylesheet for some (very basic) default styling -->
+<link href="/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<div id="container">
+    <div class="shell">
+
+        <!-- Small Nav -->
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <div class="box">
+                    <!-- Box Head -->
+                  
+                    <!-- End Box Head -->
+                    <!-- Table -->
+                    <div class="table">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+
+                                <th>Наслов</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+
+                            @foreach (var item in ViewBag.OnePageOfProducts)
+                            {
+                                <tr>
+
+
+                                    <td><h3><a href="#">@item.Title</a></h3></td>
+
+                                    <td>
+                                        <a href="@Url.Action("DeleteFAQ", "Admin", new { id = item.Id })" class="ico del">Избриши</a>
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("EditFAQ", "Admin", new { id = item.Id })" class="ico edit">Измени</a>
+                                    </td>
+                                </tr>
+
+
+                            }
+
+                            @Html.PagedListPager((IPagedList)ViewBag.OnePageOfProducts, page => Url.Action("FAQ", "Admin", new { page }))
+
+                        </table>
+
+
+                        <!-- Pagging -->
+                        <div class="pagging">
+
+                        </div>
+                        <!-- End Pagging -->
+
+                    </div>
+                    <!-- Table -->
+
+                </div>
+                <!-- End Box -->
+                <!-- Box -->
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <div id="sidebar">
+
+                <!-- Box -->
+                <div class="box">
+
+                    <!-- Box Head -->
+                    <!-- End Box Head-->
+
+                    <div class="box-content">
+                        <a href="@Url.Action("CreateFAQ","Admin")" class="add-button"><span>Додади</span></a>
+                        <div class="cl">&nbsp;</div>
+
+
+                    </div>
+                </div>
+                <!-- End Box -->
+            </div>
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>

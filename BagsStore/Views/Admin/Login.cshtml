@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Административен дел";
+    Layout = null;
+}
+
+<html lang="en-US">
+<head>
+
+    <meta charset="utf-8">
+
+    <title>Административен дел</title>
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Varela+Round">
+    <link rel="stylesheet" type="text/css" media="all" href="~/Content/login.css">
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="login">
+
+        <h2><span class="fontawesome-lock"></span>Администратор</h2>
+
+        @using (Html.BeginForm("CheckCredentials", "Admin"))
+        {
+
+            <fieldset>
+                <p style="color:red;font-weight:bold;">@ViewBag.msg</p>
+                <p><label for="user">Корисничко име</label></p>
+                <p><input type="text" id="email" name="user" value="" onblur="if (this.value == '') this.value = ''" onfocus="    if (this.value == '') this.value = ''" required></p> <!-- JS because of IE support; better: placeholder="mail@address.com" -->
+
+                <p><label for="password">Лозинка</label></p>
+                <p><input type="password" id="password" name="pass" value="" onblur="if (this.value == '') this.value = ''" onfocus="    if (this.value == '') this.value = ''" required></p> <!-- JS because of IE support; better: placeholder="password" -->
+
+                <p><input type="submit" value="Најави се"></p>
+
+            </fieldset>
+
+        }
+
+    </div> <!-- end login -->
+
+</body>
+</html>

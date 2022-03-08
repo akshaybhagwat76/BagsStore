@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "EditStore";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@using BagsStore.Models
+
+@model BagsStore.Models.Store
+
+<script>
+    $(document).ready(function () {
+
+        $('#cityId').val('@Model.Location');
+        if (@Model.Partner== true) {
+            $("#Partner").val('1');
+        }
+        else {
+            $("#Partner").val('0');
+        }
+    });
+
+
+</script>
+
+<div id="container" style="width:100%">
+    <div class="shell">
+
+        <!-- Small Nav -->
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <!-- End Box -->
+                <!-- Box -->
+                <div class="box">
+                    <!-- Box Head -->
+                    <div class="box-head">
+                        <h2>Edit Store</h2>
+                    </div>
+                    <!-- End Box Head -->
+
+                    @using (Html.BeginForm(
+                    null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        <!-- Form -->
+                        <div class="form">
+
+                            <p>
+                                <label>Name</label>
+                                <input required type="text" name="Name" value="@Model.Name" class="field size1" />
+                                <input type="hidden" name="Id" value="@Model.Id"/>
+                            </p>
+
+                            <p>
+                                <label>Street</label>
+                                <input required type="text" name="Street" value="@Model.Street" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>Latitude</label>
+                                <input required type="text" name="Latitude" value="@Model.Latitude" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>Longitude</label>
+                                <input required type="text" name="Longitude" value="@Model.Longitude" class="field size1" />
+                            </p>
+                            <p>
+                                <label>Type</label>
+                                <input required type="text" name="Type" value="@Model.Type" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>WorkingHours</label>
+                                <input required type="text" name="WorkingHours" value="@Model.WorkingHours" class="field size1" />
+                            </p>
+
+                            <p>
+                                <label>Price</label>
+                                <input required type="text" name="Price" class="field size1" value="@Model.Price" onkeypress="return isNumberKey(this, event);" />                                
+                            </p>
+                            <p>
+                                <label>Picture</label>
+                                <input type="file" name="Picture" accept="image/*" />
+                                <img src="../../Images/@Model.Picture" style="width:70px;height:70px;" />
+                            </p>
+                            <p>
+                                <label>Partner</label>
+                                <select id="Partner" name="Partner" class="field size1">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </p>
+                            <p>
+                                <label>Location</label>
+                                <select id="cityId" name="cityId" class="field size1">
+                                    @foreach (Location l in ViewBag.loc)
+                                    {
+                                        <option value="@l.Id">@l.Name</option>
+                                    }
+                                </select>
+                            </p>
+                            <p>
+                                <label>Email</label>
+                                <input required type="text" name="Email" value="@Model.Email" class="field size1" />
+                            </p>
+                            <p>
+                                <label>MapPicture</label>
+                                <input type="file" name="MapPicture" accept="image/*" />
+                                <img src="../../Images/@Model.MapPicture" style="width:70px;height:70px;" />
+                            </p>
+                            <p>
+                                <label>Link</label>
+                                <input required type="text" name="Link" value="@Model.Link" class="field size1" />
+                            </p>
+                            <p>
+                                <label>RealName</label>
+                                <input required type="text" name="RealName" value="@Model.RealName" class="field size1" />
+                            </p>
+                            <p>
+                                <label>HourFrom</label>
+                                <input required type="text" name="HourFrom" value="@Model.HourFrom" class="field size1" />
+                            </p>
+                            <p>
+                                <label>HourTo</label>
+                                <input required type="text" name="HourTo" value="@Model.HourTo" class="field size1" />
+                            </p>
+                            <p>
+                                <label>Services</label>
+                                <input required type="text" name="Services" value="@Model.Services" class="field size1" />
+                            </p>
+                            <p>
+                                <label>DayOff</label>
+                                <input required type="text" name="DayOff" value="@Model.DayOff" class="field size1" />
+                            </p>
+                            <p>
+                                <label>Additional</label>
+                                <input required type="text" name="Additional" value="@Model.Additional" class="field size1" />
+                            </p>
+                            <p>
+                                <label>PictureMobile</label>
+                                <input type="file" name="PictureMobile" accept="image/*" />
+                                <img src="../../Images/@Model.PictureMobile" style="width:70px;height:70px;" />
+                            </p>
+                        </div>
+                        <!-- End Form -->
+                        <!-- Form Buttons -->
+                        <div class="buttons">
+                            <input type="submit" class="button" value="Update" />
+                        </div>
+                        <!-- End Form Buttons -->
+                    }
+                </div>
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>
+<script type="text/javascript">
+    function isNumberKey(txt, evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode == 46) {
+            //Check if the text already contains the . character
+            if (txt.value.indexOf('.') === -1) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (charCode > 31 &&
+                (charCode < 48 || charCode > 57))
+                return false;
+        }
+        return true;
+    }
+</script>

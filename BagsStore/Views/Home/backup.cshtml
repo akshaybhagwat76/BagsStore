@@ -1,0 +1,765 @@
+﻿@using BagsStore.Models;
+@{
+    Picture p = ViewBag.p;
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+    int j = 1;
+    int id = 0;
+}
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+@section HeaderContent{
+    <meta property="og:title" content="Bag to Store" />
+    <meta property="og:type" content="website" />
+    <meta property="og:description" content="Bag to Store is a startup company based in Ljubljana, Slovenia. The idea of opening a company for bag storage came after many trips and many struggling with the luggage. No, we know that we are not the first one offering this service, but we are most reliable ones." />
+    <meta property="og:url" content="https://bagtostore.com/" />
+    <meta property="og:image" content="https://bagtostore.com/Images/cover.jpg" />
+
+    <title>Luggage Storage in Ljubljana-Bag to Store</title>
+    <meta name="description" content="Bag to Store, Luggage Storage in Ljubljana. Only 2,99€. Find a luggage storage near you, book now and explore! Safe. Reliable. Convenient. Bag storage near you." />
+}
+
+
+@if (Request.Browser.IsMobileDevice)
+{
+    <style>
+    .main-header {
+        position: relative;
+        background-image: linear-gradient(0deg,rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)), url(/images/@p.Picture1);
+        background-repeat: no-repeat;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+
+    .xdsoft_current
+    {
+        background-color:green !important;
+    }
+
+    .xdsoft_datetimepicker .xdsoft_calendar td:hover, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
+        background-color: lightgreen !important;
+        color:black !important;
+        font-weight:bold;
+    }
+
+    </style>
+}
+else
+{
+    <style>
+    .main-header {
+        position: relative;
+        background-image: linear-gradient(0deg,rgba(0, 0, 0, 0.4),rgba(0, 0, 0, 0.4)), url(/images/@p.Picture1);
+        background-repeat: no-repeat;
+        background-position: center bottom 35%;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+
+    .xdsoft_current
+    {
+        background-color:green !important;
+    }
+
+    .xdsoft_datetimepicker .xdsoft_calendar td:hover, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
+        background-color: lightgreen !important;
+        color:black !important;
+        font-weight:bold;
+    }
+
+    </style>
+}
+
+<section class="main-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-lg-12 m-auto">
+                <div class="header-content text-left">
+                    <h1 class="title text-uppercase">LUGGAGE STORAGE FOR 2,99 EUR PER DAY</h1>
+                    <h4 class="text">Most reliable bag storage near you!</h4>
+                    <div style="background-color:#63A13C90; padding:20px;">
+                        <form method="POST" action="/Stores/Index">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <input type="hidden" id="lat" name="lat" value="@ViewBag.latLj" />
+                                        <input type="hidden" id="lng" name="lng" value="@ViewBag.lngLj" />
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <input style="border:0!important;" id="loc" autocomplete="off" name="where" list="city" type="text" required class="form-control" placeholder="Where?">
+                                                <datalist id="city">
+                                                    <option value="My Location">
+                                                    <option value="Ljubljana">
+                                                </datalist>
+                                                <div class="input-group-append">
+                                                    <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-search"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+
+                                                <input autocomplete="off" class="form-control" id="input" onchange="checkDropOff()" placeholder="Drop-off" name="dropOff" required />
+                                                <div class="input-group-append">
+                                                    <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+
+                                                <input autocomplete="off" class="form-control" id="input1" onchange="checkPickUp()" placeholder="Pick-up" name="pickUp" required />
+                                                <div class="input-group-append">
+                                                    <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-calendar-day"></i></span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <input style="border:0!important;" required type="number" min="1" onfocus="this.value='1'" class="form-control" name="objects" placeholder="Bags">
+                                                <div class="input-group-append">
+                                                    <span style="border:0!important; background:white!important; cursor:pointer;" class="input-group-text"><i class="fas fa-luggage-cart"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input style="width:100%!important; height:100%!important;" type="submit" class="btn-one" value="Search">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $('#input').datetimepicker({ step: 30 });
+    $('#input1').datetimepicker({ step: 30 });
+
+
+
+    function checkDropOff() {
+        var dropOff = $("#input").val();
+        var date = new Date(dropOff);
+
+        if (date < new Date()) {
+
+            var modal = document.getElementById("myModal2");
+            var span = document.getElementsByClassName("close2")[0];
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            modal.style.display = "block";
+            $("#input").val("");
+        }
+
+    }
+
+    function checkPickUp() {
+        var pickUp = $("#input1").val();
+        var date = new Date(pickUp);
+
+        var dropOff = $("#input").val();
+        var date2 = new Date(dropOff);
+
+        if (date < new Date()) {
+
+            var modal = document.getElementById("myModal2");
+            var span = document.getElementsByClassName("close2")[0];
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            $("#modalC").html("You can not book earlier than current date!");
+            modal.style.display = "block";
+            $("#input1").val("");
+        }
+
+        if (date < date2) {
+
+            var modal = document.getElementById("myModal2");
+            var span = document.getElementsByClassName("close2")[0];
+
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function (event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            $("#modalC").html("You can not book earlier than drop off date!");
+            modal.style.display = "block";
+
+            $("#input1").val("");
+        }
+    }
+
+
+
+
+</script>
+
+<div id="myModal2" class="modal2">
+
+    <!-- Modal content -->
+    <div class="modal-content2">
+        <span class="close2">&times;</span>
+        <br />
+        <p style="font-size: 20px; color: white; text-align: center; margin-bottom: 15px;" id="modalC">You can not book earlier than current date!</p>
+    </div>
+
+</div>
+
+<div id="myModal3" class="modal3">
+
+    <!-- Modal content -->
+    <div class="modal-content3">
+        <span class="close3">&times;</span>
+        <br />
+        <p style="font-size: 18px; color: white; text-align: center; margin-bottom: 15px;">Ups, unfortunately we are still not present in that city, stay tuned for more news</p>
+    </div>
+
+</div>
+
+<style>
+
+    /* The Modal (background) */
+    .modal2 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 160px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content2 {
+        background-color: #63A13C;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #888;
+        width: 30%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close2 {
+        color: white;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close2:hover,
+        .close2:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    /* The Modal (background) */
+    .modal3 {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 160px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content3 {
+        background-color: #63A13C;
+        margin: auto;
+        padding: 15px;
+        border: 1px solid #888;
+        width: 38%;
+        font-weight: bold;
+    }
+
+    /* The Close Button */
+    .close3 {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close3:hover,
+        .close3:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+
+
+<style>
+</style>
+
+<section class="working-progress">
+    <div class="container">
+        <div class="section-header text-center">
+            <p class="section-title">How It Works</p>
+            <h4 class="section-text">
+                Luggage storage reservation in a few minutes
+            </h4>
+
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="item">
+                    <div class="icon">
+                        <img class="svg" src="/img/source/svg/4.svg" alt="Create Your Account">
+                    </div>
+                    <p class="title">→ 1 ←</p>
+                    <a class="title" href="#">Find luggage storage near you<br />&nbsp;</a>
+                    <p>
+                        We cover locations from main and train stations to the inner city. Choose one that suits you the best.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="item">
+                    <div class="icon">
+                        <img class="svg" src="/img/source/svg/5.svg" alt="Select Your Destination">
+                    </div>
+                    <p class="title">→ 2 ←</p>
+                    <a class="title" href="#">Make a booking<br />&nbsp;<br />&nbsp;</a>
+                    <p>
+                        Easy and fast booking through our platform.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 offset-md-3 col-lg-3 offset-lg-0">
+                <div class="item">
+                    <div class="icon">
+                        <img class="svg" src="/img/source/svg/6.svg" alt="Make A Reservation">
+                    </div>
+                    <p class="title">→ 3 ←</p>
+                    <a class="title" href="#">Check in your bags in our store<br />&nbsp;</a>
+                    <p>
+                        Follow google maps link sent to your email, find our store and drop off your baggage.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 offset-md-3 col-lg-3 offset-lg-0">
+                <div class="item">
+                    <div class="icon">
+                        <img class="svg" src="/img/source/svg/7.svg" alt="Make A Reservation">
+                    </div>
+                    <p class="title">→ 4 ←</p>
+                    <a class="title" href="#">Explore the city luggage free</a>
+                    <p>
+                        That's it. Grab free city map and enjoy exploring the city while we take care of your baggage.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+
+    svg {
+        width: 100px;
+        height: 100px;
+    }
+
+        svg path {
+            fill: gray !important;
+        }
+</style>
+
+<script>
+
+    $(function () {
+        jQuery('img.svg').each(function () {
+            var $img = jQuery(this);
+            var imgID = $img.attr('id');
+            var imgClass = $img.attr('class');
+            var imgURL = $img.attr('src');
+
+            jQuery.get(imgURL, function (data) {
+                // Get the SVG tag, ignore the rest
+                var $svg = jQuery(data).find('svg');
+
+                // Add replaced image's ID to the new SVG
+                if (typeof imgID !== 'undefined') {
+                    $svg = $svg.attr('id', imgID);
+                }
+                // Add replaced image's classes to the new SVG
+                if (typeof imgClass !== 'undefined') {
+                    $svg = $svg.attr('class', imgClass + ' replaced-svg');
+                }
+
+                // Remove any invalid XML tags as per http://validator.w3.org
+                $svg = $svg.removeAttr('xmlns:a');
+
+                // Check if the viewport is set, else we gonna set it if we can.
+                if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
+                    $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'))
+                }
+
+                // Replace image with new SVG
+                $img.replaceWith($svg);
+
+            }, 'xml');
+
+        });
+    });
+
+</script>
+
+<style>
+    .carousel-inner .item {
+    }
+</style>
+
+<h2 style="text-align:center;margin-top:15px">Customers Reviews</h2>
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!--
+     <ol class="carousel-indicators">
+         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+         @for (int i = 1; i < ViewBag.testn; i++)
+         {
+             <li data-target="#myCarousel" data-slide-to="@i"></li>
+         }
+
+     </ol>
+    -->
+    <div class="carousel-inner">
+        @foreach (Testimonial t in ViewBag.testimonials)
+        {
+            id = t.Id;
+            <div class="item carousel-item active">
+                <p class="testimonial" style="color:black">
+                    @t.Comment
+                </p>
+                <p class="overview"><b>@t.Name</b></p>
+                <div class="star-rating">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                        <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                    </ul>
+                </div>
+            </div>
+            break;
+        }
+
+        @foreach (Testimonial t in ViewBag.testimonials)
+        {
+            if (t.Id != id)
+            {
+                <div class="item carousel-item">
+                    <p class="testimonial" style="color:black">
+                        @t.Comment
+                    </p>
+                    <p class="overview"><b>@t.Name</b></p>
+                    <div class="star-rating">
+                        <ul class="list-inline">
+
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+                            <li class="list-inline-item"><i class="fa fa-star"></i></li>
+
+                        </ul>
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+    <!-- Carousel controls -->
+    <a class="carousel-control left carousel-control-prev" href="#myCarousel" data-slide="prev">
+        <i class="fa fa-angle-left"></i>
+    </a>
+    <a class="carousel-control right carousel-control-next" href="#myCarousel" data-slide="next">
+        <i class="fa fa-angle-right"></i>
+    </a>
+</div>
+
+<section class="working-progress second-progress">
+    <div class="container">
+        <div class="section-header text-center" style="margin-bottom: 0px!important;">
+            <h4 class="section-text text-uppercase">
+                Why choose Us
+            </h4>
+            <p style="margin: 0 auto; width:80%;text-align:left !important">
+                Bag to Store is created by travelers and for travelers, therefore we offer you reliable and safe solution near you for your baggage with fixed and affordable prices. Days worrying about where to store your luggage after checking out from your accommodation or where to store your bags on a one day trip are over.  Make your trip experience even better and let us take care of your bags.
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="item2">
+                    <div class="icon">
+                        <i style="color:#63A13C!important" class="fas fa-user-tie fa-3x"></i>
+                    </div>
+                    <a class="title" href="#">We are professional<br />&nbsp;</a>
+                    <p>
+                        We strive to give you best service possible by fullfiling your needs.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="item2">
+                    <div class="icon">
+                        <i style="color:#63A13C!important" class="fab fa-usps fa-3x"></i>
+                    </div>
+                    <a class="title" href="#">Best service guarantee<br />&nbsp;</a>
+                    <p>
+                        No hidden cost. No surprises. You pay what you see.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 offset-md-3 col-lg-3 offset-lg-0">
+                <div class="item2">
+                    <div class="icon">
+                        <i style="color:#63A13C!important" class="fas fa-shield-alt fa-3x"></i>
+                    </div>
+                    <a class="title" href="#">We are trusted and secured</a>
+                    <p>
+                        Your luggage is safe and secured with us, out of public access. Upon check in you get personalised code.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 offset-md-3 col-lg-3 offset-lg-0">
+                <div class="item2">
+                    <div class="icon">
+                        <i style="color:#63A13C!important" class="fas fa-phone fa-3x"></i>
+                    </div>
+                    <a class="title" href="#">Online support 24/7</a>
+                    <p>
+                        For any inquries our team is always ready to assist you and find the easiest possible solution.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<style>
+    .carousel {
+        width: 700px;
+        margin: 0 auto;
+        padding-bottom: 50px;
+    }
+
+        .carousel .item {
+            color: #999;
+            font-size: 14px;
+            text-align: center;
+            overflow: hidden;
+            min-height: 100px;
+        }
+
+            .carousel .item a {
+                color: #eb7245;
+            }
+
+        .carousel .img-box {
+            width: 145px;
+            height: 145px;
+            margin: 0 auto;
+            border-radius: 50%;
+        }
+
+            .carousel .img-box img {
+                width: 100%;
+                height: 100%;
+                display: block;
+                border-radius: 50%;
+            }
+
+        .carousel .testimonial {
+            padding: 30px 0 10px;
+            padding-top: 50px;
+        }
+
+        .carousel .overview {
+            text-align: center;
+            padding-bottom: 5px;
+        }
+
+            .carousel .overview b {
+                color: #333;
+                font-size: 15px;
+                text-transform: uppercase;
+                display: block;
+                padding-bottom: 5px;
+            }
+
+        .carousel .star-rating i {
+            font-size: 18px;
+            color: #ffdc12;
+        }
+
+        .carousel .carousel-control {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #339966;
+            text-shadow: none;
+            top: 4px;
+        }
+
+    .carousel-control i {
+        font-size: 20px;
+        margin-right: 2px;
+    }
+
+    .carousel-control.left {
+        left: auto;
+        right: 40px;
+    }
+
+    .carousel-control.right i {
+        margin-right: -2px;
+    }
+
+    .carousel .carousel-indicators {
+        bottom: 15px;
+    }
+
+    .carousel-indicators li, .carousel-indicators li.active {
+        width: 11px;
+        height: 11px;
+        margin: 1px 5px;
+        border-radius: 50%;
+    }
+
+    .carousel-indicators li {
+        background: #9fdfbf;
+        border-color: transparent;
+    }
+
+        .carousel-indicators li.active {
+            border: none;
+            background: #2d8659;
+        }
+</style>
+
+@section FooterContent{
+    <script>
+        $(function () {
+
+
+            var pop = '@ViewBag.pop';
+
+            if (pop == 'True') {
+                var modal = document.getElementById("myModal3");
+                var span = document.getElementsByClassName("close3")[0];
+
+                span.onclick = function () {
+                    modal.style.display = "none";
+                }
+
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
+                modal.style.display = "block";
+            }
+
+            $('#loc').change(function (e) {
+
+                if ($('#loc').val() != "My Location" && $('#loc').val() != "Ljubljana") {
+                    var modal = document.getElementById("myModal3");
+                    var span = document.getElementsByClassName("close3")[0];
+
+                    span.onclick = function () {
+                        modal.style.display = "none";
+                    }
+
+                    window.onclick = function (event) {
+                        if (event.target == modal) {
+                            modal.style.display = "none";
+                        }
+                    }
+
+                    modal.style.display = "block";
+                    $('#loc').val("");
+                }
+
+                if ($('#loc').val() == "My Location")
+                {
+                    getLocation();
+                }
+            });
+        });
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                $("#loc").val("");
+                alert("Geolocation is not supported by this browser");
+            }
+        }
+
+        function showPosition(position) {
+            $("#lat").val(position.coords.latitude);
+            $("#lng").val(position.coords.longitude);
+            $("#loc").val("My Location");
+        }
+
+    </script>
+}
+

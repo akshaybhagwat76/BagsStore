@@ -1,0 +1,98 @@
+﻿@using BagsStore.Models
+@model BagsStore.Models.Reservation
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<div id="container">
+    <div class="shell">
+
+        <!-- Small Nav -->
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <!-- End Box -->
+                <!-- Box -->
+                <div class="box">
+                    <!-- Box Head -->
+                    <div class="box-head">
+                        <h2>Избриши</h2>
+                    </div>
+                    <!-- End Box Head -->
+                    <!-- Form -->
+                    <div class="form">
+                        <p>
+                            <label>Име и презиме</label>
+                            <span>
+                                @Model.Name @Model.Surname
+                            </span>
+                        </p>
+
+                        <p>
+                            <label>Телефон</label>
+                            <span>
+                                @Model.Phone
+                            </span>
+                        </p>
+
+                        <p>
+                            <label>Емаил</label>
+                            <span>
+                                @Model.Email
+                            </span>
+                        </p>
+
+                        <p>
+                            <label>Локација</label>
+                            <span>
+                                @Model.StoreName
+                            </span>
+                        </p>
+
+                        <p>
+                            <label>Оставање</label>
+                            <span>
+                                @Model.DropOff
+                            </span>
+                        </p>
+
+                        <p>
+                            <label>Превземање</label>
+                            <span>
+                                @Model.PickUp
+                            </span>
+                        </p>
+
+                    </div>
+                    <form method="post" action="/Admin/DeleteReservation">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <div class="buttons">
+                            <input type="submit" class="button" value="Избриши" />
+                        </div>
+                    </form>
+
+                </div>
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>

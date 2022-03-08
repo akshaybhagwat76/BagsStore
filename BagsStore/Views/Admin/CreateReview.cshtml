@@ -1,0 +1,105 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@using BagsStore.Models
+
+
+<div id="container" style="width:100%">
+    <div class="shell">
+
+        <!-- Small Nav -->
+        <!-- End Small Nav -->
+        <!-- Message OK -->
+        <!-- End Message Error -->
+        <br />
+        <!-- Main -->
+        <div id="main">
+            <div class="cl">&nbsp;</div>
+
+            <!-- Content -->
+            <div id="content">
+
+                <!-- Box -->
+                <!-- End Box -->
+                <!-- Box -->
+                <div class="box">
+                    <!-- Box Head -->
+                    <div class="box-head">
+                        <h2>Додади</h2>
+                    </div>
+                    <!-- End Box Head -->
+
+                    @using (Html.BeginForm(
+                    null, null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+
+                        <!-- Form -->
+                <div class="form">
+
+                    <p>
+                        <label>Избери град</label>
+                        <select name="cityId">
+                            @foreach (Location l in ViewBag.locations)
+                            {
+                                <option value="@l.Id">@l.Name</option>
+                            }
+                        </select>
+                    </p>
+
+                    <p>
+                        <label>Внеси име</label>
+                        <input required type="text" name="name" class="field size1" />
+                    </p>
+
+                    <p>
+                        <label>Внеси презиме</label>
+                        <input required type="text" name="lastName" class="field size1" />
+                    </p>
+
+                    <p>
+                        <label>Внеси држава</label>
+                        <input required type="text" name="country" class="field size1" />
+                    </p>
+
+                    <p>
+                        <label>Порака</label>
+                        <textarea id="editor2" name="comment"></textarea>
+                        <script type="text/javascript">
+                            CKEDITOR.replace('editor2',
+                                {
+                                    filebrowserImageBrowseUrl: '/ckfinder/ckfinder.html?type=Images',
+                                    filebrowserUploadUrl: '/ckfinder/core/connector/aspx/connector.aspx?       command=QuickUpload&type=Files',
+                                    filebrowserImageUploadUrl: '/Admin/Upload'
+
+                                }
+
+                            );
+                        </script>
+
+                    </p>
+
+
+                </div>
+                        <!-- End Form -->
+                        <!-- Form Buttons -->
+                        <div class="buttons">
+                            <input type="submit" class="button" value="Додади" />
+                        </div>
+                        <!-- End Form Buttons -->
+                    }
+                </div>
+                <!-- End Box -->
+
+            </div>
+            <!-- End Content -->
+            <!-- Sidebar -->
+            <!-- End Sidebar -->
+
+            <div class="cl">&nbsp;</div>
+        </div>
+        <!-- Main -->
+    </div>
+</div>

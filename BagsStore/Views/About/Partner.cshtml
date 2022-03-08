@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "HowItWorks";
+}
+@model BagsStore.Models.ItemContent
+<div class="breadcrumb-section">
+</div>
+
+<div class="page-wrapper">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <div class="col-md-12">
+
+                    <h1 class="title text-center mb-3">@Model.Title</h1>
+
+                    @Html.Raw(Model.Content)
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6">
+
+                <img class="img-fluid" style="margin-top:30%" src="/images/@Model.BigImage" />
+
+            </div>
+
+        </div>
+
+        <div class="row mt-5">
+
+            <div class="col-md-6">
+                <!-- Go to www.addthis.com/dashboard to customize your tools --> <div class="addthis_inline_share_toolbox"></div>
+            </div>
+
+            <div class="col-md-6">
+                <a style="float:right; color:#63A13C; font-weight:bold;" href="#" onclick="goBack()"><< Back</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
